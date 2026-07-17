@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_explore_campuses",
+  "info": {
+    "displayName": "explore-campus",
+    "icon": "map",
+    "description": "Campus exploration grid with icon boxes"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Explore the Campus"
+    },
+    "boxes": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.explore-box"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_infocus_items",
+  "info": {
+    "displayName": "infocus-item",
+    "icon": "picture",
+    "description": "An individual item for the Infocus section"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "link": {
+      "type": "string",
+      "default": "#"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_notice_items",
+  "info": {
+    "displayName": "notice-item",
+    "icon": "bulletList",
+    "description": "An individual notice or announcement row item"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "string",
+      "required": true
+    },
+    "link": {
+      "type": "string",
+      "default": "#"
+    }
+  }
+}

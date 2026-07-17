@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_accreditation_items",
+  "info": {
+    "displayName": "accreditation-item",
+    "icon": "award",
+    "description": "Individual accreditation logo"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "abbr": {
+      "type": "string",
+      "required": true
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sections_courses",
+  "info": {
+    "displayName": "courses",
+    "icon": "book",
+    "description": "Filterable course cards section"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Educate. Empower. Excel."
+    },
+    "subheading": {
+      "type": "string",
+      "default": "Industry-Relevant Programs"
+    },
+    "categories": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.course-category"
+    }
+  }
+}

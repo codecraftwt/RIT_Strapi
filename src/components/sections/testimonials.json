@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_testimonials",
+  "info": {
+    "displayName": "testimonials",
+    "icon": "quote",
+    "description": "Student testimonials carousel"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Our Testimonial"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.testimonial-item"
+    }
+  }
+}

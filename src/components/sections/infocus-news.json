@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_infocus_news",
+  "info": {
+    "displayName": "infocus-news",
+    "icon": "slideshow",
+    "description": "Infocus & RIT in News double-slider section"
+  },
+  "options": {},
+  "attributes": {
+    "infocusTitle": {
+      "type": "string",
+      "required": true,
+      "default": "Infocus"
+    },
+    "newsTitle": {
+      "type": "string",
+      "required": true,
+      "default": "RIT in News"
+    },
+    "infocusItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.infocus-item"
+    },
+    "newsItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.news-item"
+    }
+  }
+}

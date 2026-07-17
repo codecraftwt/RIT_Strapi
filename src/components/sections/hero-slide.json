@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_sections_hero_slides",
+  "info": {
+    "displayName": "hero-slide",
+    "icon": "landscape",
+    "description": "Individual slide within the hero carousel"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "sub": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "link": {
+      "type": "string"
+    },
+    "videoUrl": {
+      "type": "string"
+    }
+  }
+}

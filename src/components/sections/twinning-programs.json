@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_sections_twinning_programs",
+  "info": {
+    "displayName": "twinning-programs",
+    "icon": "globe",
+    "description": "Twinning programs section with description, side graphic, and features grid"
+  },
+  "options": {},
+  "attributes": {
+    "eyebrow": {
+      "type": "string",
+      "required": true,
+      "default": "Twinning Programs"
+    },
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "TWINNING PROGRAMS AT RIT!"
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "ctaText": {
+      "type": "string",
+      "default": "KNOW MORE"
+    },
+    "ctaUrl": {
+      "type": "string",
+      "default": "#"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.feature-item"
+    }
+  }
+}

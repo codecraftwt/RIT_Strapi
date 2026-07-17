@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "pages",
+  "info": {
+    "singularName": "page",
+    "pluralName": "pages",
+    "displayName": "Page",
+    "description": "Generic page content type"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "content": {
+      "type": "text"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero-slider",
+        "sections.about-content",
+        "sections.about-rit",
+        "sections.campus-life",
+        "sections.accreditations",
+        "sections.testimonials",
+        "sections.facilities",
+        "sections.explore-campus",
+        "sections.global-education",
+        "sections.why-choose-rit",
+        "sections.stats-counter",
+        "sections.courses",
+        "sections.twinning-programs",
+        "sections.placements",
+        "sections.notices-announcements",
+        "sections.infocus-news"
+      ]
+    }
+  }
+}

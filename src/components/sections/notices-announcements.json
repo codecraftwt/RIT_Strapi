@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_sections_notices_announcements",
+  "info": {
+    "displayName": "notices-announcements",
+    "icon": "bulletList",
+    "description": "A dual-column notices and announcements section"
+  },
+  "options": {},
+  "attributes": {
+    "noticesTitle": {
+      "type": "string",
+      "required": true,
+      "default": "Notices"
+    },
+    "announcementsTitle": {
+      "type": "string",
+      "required": true,
+      "default": "Announcements"
+    },
+    "notices": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.notice-item"
+    },
+    "announcements": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.notice-item"
+    }
+  }
+}

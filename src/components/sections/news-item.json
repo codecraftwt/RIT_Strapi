@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_news_items",
+  "info": {
+    "displayName": "news-item",
+    "icon": "file",
+    "description": "An individual item for RIT in News"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": false
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "link": {
+      "type": "string",
+      "default": "#"
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_explore_boxes",
+  "info": {
+    "displayName": "explore-box",
+    "icon": "map",
+    "description": "Individual explore campus box"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["laptop", "graduation", "lightbulb", "bookOpen", "heart", "building", "camera", "play", "home", "office", "users", "globe", "school", "chartBar", "briefcase", "check", "trophy", "star", "award", "compass", "list", "map"],
+      "default": "map"
+    }
+  }
+}

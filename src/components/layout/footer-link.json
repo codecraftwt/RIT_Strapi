@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_layout_footer_links",
+  "info": {
+    "displayName": "footer-link",
+    "icon": "link",
+    "description": "A single link inside the footer column"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string",
+      "default": "#"
+    }
+  }
+}

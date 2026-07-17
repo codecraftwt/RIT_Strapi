@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_sections_placement_items",
+  "info": {
+    "displayName": "placement-item",
+    "icon": "user",
+    "description": "Individual student placement highlight entry"
+  },
+  "options": {},
+  "attributes": {
+    "studentName": {
+      "type": "string",
+      "required": true
+    },
+    "quote": {
+      "type": "text"
+    },
+    "packageInfo": {
+      "type": "string",
+      "required": true
+    },
+    "companyName": {
+      "type": "string",
+      "required": true
+    },
+    "companyLogoUrl": {
+      "type": "string"
+    },
+    "studentPhotoUrl": {
+      "type": "string"
+    },
+    "studentPhoto": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "companyLogo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

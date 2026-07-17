@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sections_stat_items",
+  "info": {
+    "displayName": "stat-item",
+    "icon": "chartBar",
+    "description": "Individual statistic with value, suffix, label, and icon"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "integer",
+      "required": true
+    },
+    "suffix": {
+      "type": "string",
+      "default": "+"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["laptop", "graduation", "lightbulb", "bookOpen", "heart", "building", "camera", "play", "home", "office", "users", "globe", "school", "chartBar", "briefcase", "check", "trophy", "star", "award", "compass", "list", "map"],
+      "default": "chartBar"
+    }
+  }
+}

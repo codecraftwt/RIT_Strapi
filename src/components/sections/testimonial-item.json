@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_testimonial_items",
+  "info": {
+    "displayName": "testimonial-item",
+    "icon": "quote",
+    "description": "Individual student testimonial"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "dept": {
+      "type": "string"
+    },
+    "text": {
+      "type": "text",
+      "required": true
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

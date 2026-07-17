@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_feature_items",
+  "info": {
+    "displayName": "feature-item",
+    "icon": "star",
+    "description": "Individual feature card with icon, title, and description"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "desc": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["laptop", "graduation", "lightbulb", "bookOpen", "heart", "building", "camera", "play", "home", "office", "users", "globe", "school", "chartBar", "briefcase", "check", "trophy", "star", "award", "compass", "list", "map"],
+      "default": "star"
+    }
+  }
+}

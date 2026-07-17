@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_main_navbar_sub_items",
+  "info": {
+    "displayName": "sub-item",
+    "icon": "bulletList",
+    "description": "A sub-item within a dropdown item"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string"
+    }
+  }
+}

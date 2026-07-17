@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_course_items",
+  "info": {
+    "displayName": "course-item",
+    "icon": "book",
+    "description": "Individual course with name, duration, and campus info"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "duration": {
+      "type": "string"
+    },
+    "campus": {
+      "type": "string",
+      "default": "On Campus"
+    }
+  }
+}

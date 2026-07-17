@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_facility_items",
+  "info": {
+    "displayName": "facility-item",
+    "icon": "building",
+    "description": "Individual facility with title, description, and image"
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "desc": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_hero_sliders",
+  "info": {
+    "displayName": "hero-slider",
+    "icon": "landscape",
+    "description": "Full-width hero image carousel with text overlays"
+  },
+  "attributes": {
+    "slides": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.hero-slide"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_sections_placements",
+  "info": {
+    "displayName": "placements",
+    "icon": "briefcase",
+    "description": "Placements highlights slider/grid section"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "PLACEMENT @ 2024-25"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.placement-item"
+    }
+  }
+}

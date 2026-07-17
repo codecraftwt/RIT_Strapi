@@ -1,0 +1,41 @@
+{
+  "kind": "singleType",
+  "collectionName": "main_navbars",
+  "info": {
+    "singularName": "main-navbar",
+    "pluralName": "main-navbars",
+    "displayName": "Main Navbar",
+    "description": "Main navigation bar with dropdown menus"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "Icon": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "default": "Main Navigation"
+    },
+    "menu_items": {
+      "type": "component",
+      "component": "main-navbar.menu-item",
+      "repeatable": true
+    }
+  }
+}

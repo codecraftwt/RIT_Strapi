@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_main_navbar_dropdown_items",
+  "info": {
+    "displayName": "dropdown-item",
+    "icon": "bulletList",
+    "description": "A dropdown item within a menu item"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "href": {
+      "type": "string"
+    },
+    "sub_items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "main-navbar.sub-item"
+    }
+  }
+}

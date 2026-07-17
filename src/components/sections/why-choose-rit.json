@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_why_choose_rits",
+  "info": {
+    "displayName": "why-choose-rit",
+    "icon": "star",
+    "description": "Feature grid highlighting why students should choose RIT"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Why Choose RIT"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.feature-item"
+    }
+  }
+}

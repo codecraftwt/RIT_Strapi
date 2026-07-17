@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_global_features",
+  "info": {
+    "displayName": "global-feature",
+    "icon": "globe",
+    "description": "Individual global education feature"
+  },
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "icon": {
+      "type": "enumeration",
+      "enum": ["laptop", "graduation", "lightbulb", "bookOpen", "heart", "building", "camera", "play", "home", "office", "users", "globe", "school", "chartBar", "briefcase", "check", "trophy", "star", "award", "compass", "list", "map"],
+      "default": "globe"
+    }
+  }
+}

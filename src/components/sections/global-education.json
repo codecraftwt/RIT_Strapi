@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_global_educations",
+  "info": {
+    "displayName": "global-education",
+    "icon": "globe",
+    "description": "Global education partnerships section"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Global Education"
+    },
+    "body": {
+      "type": "text",
+      "multiline": true
+    },
+    "quote": {
+      "type": "string"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.global-feature"
+    }
+  }
+}

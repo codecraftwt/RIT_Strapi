@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_sections_about_rits",
+  "info": {
+    "displayName": "about-rit",
+    "icon": "informationCircle",
+    "description": "Two-column About RIT section with text and image"
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "body": {
+      "type": "text",
+      "multiline": true
+    },
+    "buttonLabel": {
+      "type": "string",
+      "default": "KNOW MORE"
+    },
+    "buttonHref": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

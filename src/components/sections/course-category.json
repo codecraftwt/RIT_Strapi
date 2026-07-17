@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_course_categories",
+  "info": {
+    "displayName": "course-category",
+    "icon": "folder",
+    "description": "A category of courses (e.g. Engineering, Diploma)"
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "courses": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.course-item"
+    }
+  }
+}

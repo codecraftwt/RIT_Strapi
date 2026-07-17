@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_sections_about_contents",
+  "info": {
+    "displayName": "about-content",
+    "icon": "alignLeft",
+    "description": "Reusable about content block with eyebrow, heading, body text, and image"
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "body": {
+      "type": "text",
+      "multiline": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "imageCaption": {
+      "type": "string"
+    },
+    "attributionName": {
+      "type": "string"
+    },
+    "attributionTitle": {
+      "type": "string"
+    },
+    "imagePosition": {
+      "type": "enumeration",
+      "enum": [
+        "right",
+        "left"
+      ],
+      "default": "right"
+    }
+  }
+}

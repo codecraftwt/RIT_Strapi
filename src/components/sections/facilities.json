@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_facilities",
+  "info": {
+    "displayName": "facilities",
+    "icon": "building",
+    "description": "World-class facilities carousel section"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "World Class Facilities"
+    },
+    "intro": {
+      "type": "text"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.facility-item"
+    }
+  }
+}

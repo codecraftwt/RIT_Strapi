@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_stats_counters",
+  "info": {
+    "displayName": "stats-counter",
+    "icon": "chartBar",
+    "description": "Animated statistics counter section"
+  },
+  "attributes": {
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.stat-item"
+    }
+  }
+}

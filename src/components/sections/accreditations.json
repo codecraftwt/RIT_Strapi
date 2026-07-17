@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_sections_accreditations",
+  "info": {
+    "displayName": "accreditations",
+    "icon": "award",
+    "description": "Accreditations and recognitions logo grid"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Accreditations & Recognitions"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.accreditation-item"
+    }
+  }
+}

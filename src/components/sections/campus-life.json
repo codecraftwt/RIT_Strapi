@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_campus_lifes",
+  "info": {
+    "displayName": "campus-life",
+    "icon": "image",
+    "description": "Campus life photo gallery section"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Campus Life"
+    },
+    "body": {
+      "type": "text"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    }
+  }
+}
