@@ -20,7 +20,7 @@ const deniedExecutableTypes = [
   'application/x-mach-binary',
 ];
 
-module.exports = () => ({
+module.exports = ({ env }) => ({
   'users-permissions': {
     config: {
       jwtManagement: 'refresh',
@@ -31,9 +31,15 @@ module.exports = () => ({
   },
   upload: {
     config: {
-      security: {
-        allowedTypes: allowedMediaTypes,
-        deniedTypes: deniedExecutableTypes,
+      provider: 'cloudinary',
+      providerOptions: {
+        cloud_name: env('CLOUDINARY_NAME'),
+        api_key: env('CLOUDINARY_KEY'),
+        api_secret: env('CLOUDINARY_SECRET'),
+      },
+      actionOptions: {
+        upload: {},
+        delete: {},
       },
     },
   },

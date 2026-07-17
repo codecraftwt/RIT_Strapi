@@ -646,10 +646,28 @@ async function seedPagePermissions(strapi) {
 async function seedHomePage(strapi) {
   const slugs = ['/'];
   for (const slug of slugs) {
-    const pages = await strapi.db.query('api::page.page').findMany({
+    let pages = await strapi.db.query('api::page.page').findMany({
       where: { slug },
       populate: { sections: true }
     });
+
+    if (pages.length === 0) {
+      const created = await strapi.documents('api::page.page').create({
+        data: {
+          title: 'Home',
+          slug: '/',
+          content: '',
+        },
+      });
+      await strapi.documents('api::page.page').publish({
+        documentId: created.documentId,
+      });
+      strapi.log.info('Home page created and published.');
+      pages = await strapi.db.query('api::page.page').findMany({
+        where: { slug },
+        populate: { sections: true }
+      });
+    }
 
     for (const page of pages) {
       let updatedSections = [...(page.sections || [])];
