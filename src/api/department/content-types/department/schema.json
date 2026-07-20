@@ -1,0 +1,54 @@
+{
+  "kind": "collectionType",
+  "collectionName": "departments",
+  "info": {
+    "singularName": "department",
+    "pluralName": "departments",
+    "displayName": "Department",
+    "description": "Department type with unique navigation and customizable page layout"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "menu_items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "main-navbar.menu-item"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.hero-slider",
+        "sections.about-content",
+        "sections.about-rit",
+        "sections.campus-life",
+        "sections.accreditations",
+        "sections.testimonials",
+        "sections.facilities",
+        "sections.explore-campus",
+        "sections.global-education",
+        "sections.why-choose-rit",
+        "sections.stats-counter",
+        "sections.courses",
+        "sections.twinning-programs",
+        "sections.placements",
+        "sections.notices-announcements",
+        "sections.infocus-news"
+      ]
+    }
+  }
+}

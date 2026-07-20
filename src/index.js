@@ -10,6 +10,7 @@ module.exports = {
     await seedMainNavbar(strapi);
     await seedPagePermissions(strapi);
     await seedHomePage(strapi);
+    await seedDepartments(strapi);
     strapi.log.info('Bootstrap complete — all seeds checked.');
   },
 };
@@ -31,7 +32,10 @@ async function seedPermissions(strapi) {
     'api::main-navbar.find',
     'api::main-navbar.main-navbar.find',
     'api::footer.footer.find',
+    'api::department.department.find',
+    'api::department.department.findOne',
   ];
+
 
   for (const action of actions) {
     const exists = await strapi.db.query('plugin::users-permissions.permission').findOne({
@@ -281,22 +285,22 @@ async function seedMainNavbar(strapi) {
       label: 'Departments',
       href: '#',
       dropdown_items: [
-        { label: 'Sciences & Humanities', href: '#' },
-        { label: 'Robotics and Automation', href: '#' },
-        { label: 'Civil Engineering', href: '#' },
-        { label: 'Computer Science & Engineering', href: '#' },
-        { label: 'Computer Science & Engineering (AI & ML)', href: '#' },
-        { label: 'Electrical Engineering', href: '#' },
-        { label: 'Electronics and Telecommunication Engineering', href: '#' },
-        { label: 'Information Technology', href: '#' },
-        { label: 'Mechanical Engineering', href: '#' },
-        { label: 'Automobile Engineering (Automotive Technology)', href: '#' },
-        { label: 'Mechatronics Engineering', href: '#' },
-        { label: 'Department of Management Studies (MBA)', href: '#' },
-        { label: 'HVAC Certification Course', href: '#' },
-        { label: 'Administrative Wing', href: '#' },
-        { label: 'BBA', href: '#' },
-        { label: 'Department of Computer Application', href: '#' }
+        { label: 'Sciences & Humanities', href: '/departments/sciences-humanities' },
+        { label: 'Robotics and Automation', href: '/departments/robotics-automation' },
+        { label: 'Civil Engineering', href: '/departments/civil-engineering' },
+        { label: 'Computer Science & Engineering', href: '/departments/computer-science-engineering' },
+        { label: 'Computer Science & Engineering (AI & ML)', href: '/departments/computer-science-engineering-ai-ml' },
+        { label: 'Electrical Engineering', href: '/departments/electrical-engineering' },
+        { label: 'Electronics and Telecommunication Engineering', href: '/departments/electronics-telecommunication-engineering' },
+        { label: 'Information Technology', href: '/departments/information-technology' },
+        { label: 'Mechanical Engineering', href: '/departments/mechanical-engineering' },
+        { label: 'Automobile Engineering (Automotive Technology)', href: '/departments/automobile-engineering' },
+        { label: 'Mechatronics Engineering', href: '/departments/mechatronics-engineering' },
+        { label: 'Department of Management Studies (MBA)', href: '/departments/mba' },
+        { label: 'HVAC Certification Course', href: '/departments/hvac-certification-course' },
+        { label: 'Administrative Wing', href: '/departments/administrative-wing' },
+        { label: 'BBA', href: '/departments/bba' },
+        { label: 'Department of Computer Application', href: '/departments/computer-application' }
       ]
     },
     {
@@ -611,7 +615,12 @@ async function seedMainNavbar(strapi) {
   ];
 
   if (existing) {
-    strapi.log.info('Main Navbar already exists — skipping seed.');
+    await strapi.entityService.update('api::main-navbar.main-navbar', existing.id, {
+      data: {
+        menu_items: menuItems,
+      },
+    });
+    strapi.log.info('Main Navbar updated with department URLs.');
   } else {
     await strapi.entityService.create('api::main-navbar.main-navbar', {
       data: {
@@ -906,31 +915,664 @@ async function seedHomePage(strapi) {
         updatedSections.push(whyChooseData);
       }
 
-      if (!page.sections || page.sections.length === 0) {
-        // Strip ids to avoid document relation issues
-        const cleanSections = updatedSections.map(s => {
-          const { id, ...rest } = s;
-          return rest;
-        });
-
-        await strapi.documents('api::page.page').update({
-          documentId: page.documentId,
-          data: {
-            sections: cleanSections
+      // 7. Infocus News
+      const infocusIndex = updatedSections.findIndex(s => s.__component === 'sections.infocus-news');
+      const infocusData = {
+        __component: 'sections.infocus-news',
+        infocusTitle: "Infocus",
+        newsTitle: "RIT in News",
+        infocusItems: [
+          {
+            title: "आरआयटीचे संचालक डॉ. पी. व्ही. कडळे यांना राष्ट्रीय पातळीवरील एमिनेंट डायरेक्टर पुरस्कार",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmNiM_NmExNDFiNmVhZWFjOA_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "आरआयटीच्या ३३ विद्यार्थ्यांची भारत फोर्जमध्ये निवड",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmQxY_NmEwODQzYmNlYjAyZQ_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "RIT Dance Club Secures 1st Rank at Vasant Karandak 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmQ3Z_NjlmMDM3YzMwOGVkMA_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "National Qawwali Competition",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmY5N_NjlkODdkNDQwNmRiMw_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "RIT Music Club students at National Level – DHANAK 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmZlZ_NjlkODdkZDk0YjIzMQ_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "RIT Dance Club Shines at \"Techbeats 2K26\"",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMzA0O_NjljMjFjZGQwYWZmMg_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "ISTD Islampur Chapter (RIT) Receives ISTD Quality Performance Award 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMzA4Z_NjliMGYxZDEwNmZlYQ_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "1st Rank at Umang 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMzBjZ_Njk5ZDI5NDc2ZDI5Mg_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "Blog Writing Competition at Folk Pravaah State Level Youth Festival 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMzExM_Njk5ZDI5ZDE3ZjU1NA_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "Shivaji University Annual Magazine Competition 2023-24",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMzIzY_Njk4MTgxNWZhZWM0Nw_TM3YWRhNDViZDYzMjJmYjg2Nz"
           }
-        });
-
-        await strapi.documents('api::page.page').publish({
-          documentId: page.documentId
-        });
-        strapi.log.info(`Page (documentId: ${page.documentId}, slug: ${page.slug}) seeded and published.`);
+        ],
+        newsItems: [
+          {
+            title: "आरआयटीच्या ३३ विद्यार्थ्यांची भारत फोर्जमध्ये निवड",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmQxY_NmEwODQzYmNlYjAyZQ_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          },
+          {
+            title: "RIT Dance Club Secures 1st Rank at Vasant Karandak 2026",
+            link: "activities_1.php?dsysdfiopwvmzb=mE1YjBhZWNlMmQ3Z_NjlmMDM3YzMwOGVkMA_TM3YWRhNDViZDYzMjJmYjg2Nz"
+          }
+        ]
+      };
+      if (infocusIndex > -1) {
+        updatedSections[infocusIndex] = infocusData;
       } else {
-        // Ensure the seeded draft changes are pushed to live published state
-        await strapi.documents('api::page.page').publish({
-          documentId: page.documentId
-        });
-        strapi.log.info(`Page (documentId: ${page.documentId}, slug: ${page.slug}) publish verified.`);
+        updatedSections.push(infocusData);
       }
+
+      // Always strip ids to avoid document relation issues and save updated sections array
+      const cleanSections = updatedSections.map(s => {
+        const { id, ...rest } = s;
+        return rest;
+      });
+
+      await strapi.documents('api::page.page').update({
+        documentId: page.documentId,
+        data: {
+          sections: cleanSections
+        }
+      });
+
+      await strapi.documents('api::page.page').publish({
+        documentId: page.documentId
+      });
+      strapi.log.info(`Page (documentId: ${page.documentId}, slug: ${page.slug}) updated and published.`);
     }
   }
 }
+async function seedDepartments(strapi) {
+  const departmentsData = [
+    {
+      name: "Sciences & Humanities",
+      slug: "sciences-humanities",
+      fieldsCount: 5,
+      menu_items: [
+        {
+          label: "About Department",
+          dropdown_items: [
+            { label: "Overview", href: "#" },
+            { label: "Vision & Mission", href: "#" },
+            { label: "HOD's Message", href: "#" }
+          ]
+        },
+        {
+          label: "Academic Programs",
+          dropdown_items: [
+            { label: "First Year B.Tech", href: "#" },
+            { label: "Curriculum & Syllabus", href: "#" }
+          ]
+        },
+        {
+          label: "Faculty",
+          dropdown_items: [
+            { label: "Faculty Profiles", href: "#" },
+            { label: "Staff", href: "#" }
+          ]
+        },
+        {
+          label: "Labs & Facilities",
+          dropdown_items: [
+            { label: "Chemistry Lab", href: "#" },
+            { label: "Physics Lab", href: "#" },
+            { label: "Language Lab", href: "#" }
+          ]
+        },
+        {
+          label: "Contact",
+          dropdown_items: [
+            { label: "Office Address", href: "#" },
+            { label: "Inquiries", href: "#" }
+          ]
+        }
+      ]
+    },
+    {
+      name: "Robotics and Automation",
+      slug: "robotics-automation",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "Overview", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "B.Tech Robotics", href: "#" },
+            { label: "Syllabus", href: "#" }
+          ]
+        },
+        { label: "Faculty", href: "#" },
+        {
+          label: "Labs & Projects",
+          dropdown_items: [
+            { label: "Robotics Lab", href: "#" },
+            { label: "Automation Lab", href: "#" }
+          ]
+        },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Civil Engineering",
+      slug: "civil-engineering",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "Overview", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "Undergraduate", href: "#" },
+            { label: "Postgraduate", href: "#" }
+          ]
+        },
+        { label: "Faculty Directory", href: "#" },
+        {
+          label: "Labs & Testing",
+          dropdown_items: [
+            { label: "Concrete Technology Lab", href: "#" },
+            { label: "Testing & Consultancy Services", href: "#" }
+          ]
+        },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Computer Science & Engineering",
+      slug: "computer-science-engineering",
+      fieldsCount: 7,
+      menu_items: [
+        {
+          label: "About CSE",
+          dropdown_items: [
+            { label: "Overview", href: "#" },
+            { label: "Vision & Mission", href: "#" },
+            { label: "HOD Message", href: "#" }
+          ]
+        },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "B.Tech CSE", href: "#" },
+            { label: "M.Tech CSE", href: "#" },
+            { label: "Ph.D Program", href: "#" }
+          ]
+        },
+        {
+          label: "Faculty Profiles",
+          dropdown_items: [
+            { label: "Core Faculty", href: "#" },
+            { label: "Research Publications", href: "#" }
+          ]
+        },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "Advanced Computing Lab", href: "#" },
+            { label: "Networking Lab", href: "#" },
+            { label: "Database Systems Lab", href: "#" }
+          ]
+        },
+        {
+          label: "Placements",
+          dropdown_items: [
+            { label: "Placement Statistics", href: "#" },
+            { label: "Our Recruiters", href: "#" }
+          ]
+        },
+        {
+          label: "Student Activities",
+          dropdown_items: [
+            { label: "CSE Association", href: "#" },
+            { label: "Hackathons & Events", href: "#" }
+          ]
+        },
+        { label: "Contact Us", href: "#" }
+      ]
+    },
+    {
+      name: "Computer Science & Engineering (Artificial Intelligence & Machine Learning)",
+      slug: "computer-science-engineering-ai-ml",
+      fieldsCount: 7,
+      menu_items: [
+        { label: "About AI-ML", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "B.Tech AI & ML", href: "#" },
+            { label: "Syllabus", href: "#" }
+          ]
+        },
+        { label: "Faculty Directory", href: "#" },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "AI Research Lab", href: "#" },
+            { label: "GPU Computing Lab", href: "#" }
+          ]
+        },
+        { label: "Placements", href: "#" },
+        { label: "AI & ML Club", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Electrical Engineering",
+      slug: "electrical-engineering",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About EE", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "Curriculum", href: "#" },
+            { label: "Programs Offered", href: "#" }
+          ]
+        },
+        { label: "Faculty Directory", href: "#" },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "Power Systems Lab", href: "#" },
+            { label: "Electrical Machines Lab", href: "#" }
+          ]
+        },
+        { label: "Placement Records", href: "#" },
+        { label: "Contact Us", href: "#" }
+      ]
+    },
+    {
+      name: "Electronics and Telecommunication Engineering",
+      slug: "electronics-telecommunication-engineering",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About ENTC", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "B.Tech ENTC", href: "#" },
+            { label: "M.Tech ENTC", href: "#" }
+          ]
+        },
+        { label: "Faculty Directory", href: "#" },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "Embedded Systems Lab", href: "#" },
+            { label: "Communication Lab", href: "#" }
+          ]
+        },
+        { label: "Placements", href: "#" },
+        { label: "Contact Us", href: "#" }
+      ]
+    },
+    {
+      name: "Information Technology",
+      slug: "information-technology",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About IT", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "B.Tech IT", href: "#" },
+            { label: "Syllabus", href: "#" }
+          ]
+        },
+        { label: "Faculty", href: "#" },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "Web Technology Lab", href: "#" },
+            { label: "Cloud Computing Lab", href: "#" }
+          ]
+        },
+        { label: "Placement Statistics", href: "#" },
+        { label: "Contact Us", href: "#" }
+      ]
+    },
+    {
+      name: "Mechanical Engineering",
+      slug: "mechanical-engineering",
+      fieldsCount: 8,
+      menu_items: [
+        {
+          label: "About Mechanical",
+          dropdown_items: [
+            { label: "Overview", href: "#" },
+            { label: "Vision & Mission", href: "#" },
+            { label: "HOD Message", href: "#" }
+          ]
+        },
+        {
+          label: "Academic Programs",
+          dropdown_items: [
+            { label: "B.Tech Mechanical", href: "#" },
+            { label: "M.Tech Design", href: "#" },
+            { label: "M.Tech Thermal", href: "#" }
+          ]
+        },
+        { label: "Faculty Profiles", href: "#" },
+        {
+          label: "Laboratories",
+          dropdown_items: [
+            { label: "CAD/CAM Center", href: "#" },
+            { label: "Thermal Engineering Lab", href: "#" }
+          ]
+        },
+        {
+          label: "Projects & Research",
+          dropdown_items: [
+            { label: "Student Projects", href: "#" },
+            { label: "Patents", href: "#" }
+          ]
+        },
+        { label: "Placements & Internships", href: "#" },
+        { label: "Alumni Connect", href: "#" },
+        { label: "Contact Us", href: "#" }
+      ]
+    },
+    {
+      name: "Automobile Engineering (Presently Automotive Technology)",
+      slug: "automobile-engineering",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About Dept", href: "#" },
+        { label: "Academics", href: "#" },
+        { label: "Faculty Profiles", href: "#" },
+        { label: "Automotive Labs", href: "#" },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Mechatronics Engineering",
+      slug: "mechatronics-engineering",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About Dept", href: "#" },
+        { label: "Academics", href: "#" },
+        { label: "Faculty Profiles", href: "#" },
+        { label: "Mechatronics Lab", href: "#" },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Department of Management Studies (MBA)",
+      slug: "mba",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About MBA", href: "#" },
+        { label: "Academics", href: "#" },
+        { label: "Faculty Profiles", href: "#" },
+        { label: "Facilities", href: "#" },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "HVAC Certification Course",
+      slug: "hvac-certification-course",
+      fieldsCount: 5,
+      menu_items: [
+        { label: "About Course", href: "#" },
+        { label: "Eligibility", href: "#" },
+        { label: "Syllabus", href: "#" },
+        { label: "Job Opportunities", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Administrative Wing",
+      slug: "administrative-wing",
+      fieldsCount: 5,
+      menu_items: [
+        { label: "About Wing", href: "#" },
+        { label: "Staff Profiles", href: "#" },
+        { label: "Services", href: "#" },
+        { label: "Policies", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "BBA",
+      slug: "bba",
+      fieldsCount: 5,
+      menu_items: [
+        { label: "About BBA", href: "#" },
+        { label: "Eligibility & Fees", href: "#" },
+        { label: "Faculty Profiles", href: "#" },
+        { label: "Placements", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    },
+    {
+      name: "Department of Computer Application",
+      slug: "computer-application",
+      fieldsCount: 6,
+      menu_items: [
+        { label: "About DCA", href: "#" },
+        {
+          label: "Academics",
+          dropdown_items: [
+            { label: "BCA Program", href: "#" },
+            { label: "MCA Program", href: "#" }
+          ]
+        },
+        { label: "Faculty Directory", href: "#" },
+        { label: "Labs & CCF", href: "#" },
+        { label: "Placement Statistics", href: "#" },
+        { label: "Contact", href: "#" }
+      ]
+    }
+  ];
+
+  for (const dept of departmentsData) {
+    // Seed default dynamic sections specifically configured for this department
+    let defaultSections = [];
+    if (dept.slug === 'sciences-humanities') {
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            { heading: "Sciences & Humanities Department", sub: "Laying the Foundations of Engineering Excellence", link: "#" }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT SCIENCES & HUMANITIES",
+          heading: "Bridging Science and Technology",
+          body: "The Sciences & Humanities department focuses on building strong fundamental concepts in mathematics, physics, chemistry, and communication skills, preparing first-year B.Tech students for advanced technological challenges.",
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Core Faculty", value: 22, suffix: "+" },
+            { label: "Smart Labs", value: 4, suffix: "" },
+            { label: "Student Intake", value: 480, suffix: "" }
+          ]
+        }
+      ];
+    } else if (dept.slug === 'robotics-automation') {
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            { heading: "Robotics and Automation", sub: "Engineering the Future of Autonomous Systems", link: "#" }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT ROBOTICS & AUTOMATION",
+          heading: "Shaping the Industry 5.0 Workforce",
+          body: "Our Department of Robotics and Automation integrates mechanical, electrical, and computer engineering principles to design intelligent, autonomous machines capable of transforming industrial automation, aerospace, and medical engineering sectors.",
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Research Labs", value: 6, suffix: "" },
+            { label: "Active Patents", value: 8, suffix: "+" },
+            { label: "Industry Partners", value: 15, suffix: "+" }
+          ]
+        }
+      ];
+    } else if (dept.slug === 'civil-engineering') {
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            { heading: "Civil Engineering Department", sub: "Constructing Sustainable Infrastructure for Tomorrow", link: "#" }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT CIVIL ENGINEERING",
+          heading: "Building a Better World",
+          body: "Equipping next-generation engineers with skills in structural design, geo-technical investigations, environmental resource management, and intelligent urban planning to drive sustainable societal growth.",
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Faculty Directory", value: 25, suffix: "+" },
+            { label: "Consultancy Projects", value: 50, suffix: "+" },
+            { label: "Alumni Network", value: 1200, suffix: "+" }
+          ]
+        }
+      ];
+    } else if (dept.slug === 'computer-science-engineering') {
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            { heading: "Computer Science & Engineering", sub: "Empowering Innovators for the Digital Frontier", link: "#" }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT COMPUTER SCIENCE & ENGINEERING",
+          heading: "Pioneering the Digital Age",
+          body: "The CSE Department provides deep training in AI, cybersecurity, software engineering, cloud computing, and high-performance computing, driving student innovation through hackathons and advanced project labs.",
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Intake Count", value: 180, suffix: "" },
+            { label: "Hackathons Won", value: 12, suffix: "+" },
+            { label: "Highest Package", value: 18, suffix: " LPA" }
+          ]
+        }
+      ];
+    } else if (dept.slug === 'electrical-engineering') {
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            { heading: "Electrical Engineering", sub: "Powering Innovation & Renewable Energy Solutions", link: "#" }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT ELECTRICAL ENGINEERING",
+          heading: "Energizing the Modern World",
+          body: "Focusing on smart grid technologies, energy storage solutions, EV powertrains, and electrical machine designs to empower students to tackle global carbon-neutral energy objectives.",
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Project Labs", value: 8, suffix: "" },
+            { label: "Major Grants", value: 5, suffix: "+" },
+            { label: "Industry MoUs", value: 12, suffix: "+" }
+          ]
+        }
+      ];
+    } else {
+      // Generic fallback for other departments
+      defaultSections = [
+        {
+          __component: 'sections.hero-slider',
+          slides: [
+            {
+              heading: `Department of ${dept.name}`,
+              sub: "Rajarambapu Institute of Technology",
+              link: "#"
+            }
+          ]
+        },
+        {
+          __component: 'sections.about-content',
+          eyebrow: "ABOUT THE DEPARTMENT",
+          heading: `Leading Excellence in ${dept.name}`,
+          body: `The Department of ${dept.name} at RIT is committed to delivering state-of-the-art education, research, and practical hands-on experience, shaping tomorrow's leaders.`,
+          imagePosition: "right"
+        },
+        {
+          __component: 'sections.stats-counter',
+          stats: [
+            { label: "Faculty Members", value: 15 + dept.fieldsCount, suffix: "+" },
+            { label: "Research Labs", value: dept.fieldsCount, suffix: "" },
+            { label: "Industry Partners", value: 20 + dept.fieldsCount, suffix: "+" }
+          ]
+        }
+      ];
+    }
+
+    const fullMenuItems = [
+      { label: "Home", href: "/" },
+      ...dept.menu_items
+    ];
+
+    const existing = await strapi.db.query('api::department.department').findOne({
+      where: { slug: dept.slug },
+      populate: { sections: true }
+    });
+
+    if (!existing) {
+      await strapi.documents('api::department.department').create({
+        data: {
+          name: dept.name,
+          slug: dept.slug,
+          description: `Welcome to the official portal of the Department of ${dept.name}.`,
+          menu_items: fullMenuItems,
+          sections: defaultSections
+        }
+      });
+      strapi.log.info(`Department seeded and published: ${dept.name} (${dept.fieldsCount + 1} navbar items)`);
+    } else {
+      const updateData = { menu_items: fullMenuItems };
+      if (!existing.sections || existing.sections.length === 0) {
+        updateData.sections = defaultSections;
+      }
+      await strapi.documents('api::department.department').update({
+        documentId: existing.documentId,
+        data: updateData
+      });
+      strapi.log.info(`Updated existing department ${dept.name} with custom Home link and sections.`);
+    }
+  }
+}
+
