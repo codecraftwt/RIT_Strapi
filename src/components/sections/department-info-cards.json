@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_department_info_cards",
+  "info": {
+    "displayName": "department-info-cards",
+    "icon": "apps",
+    "description": "Info cards showing head of department, programs, and intake"
+  },
+  "attributes": {
+    "cards": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.info-card"
+    }
+  }
+}

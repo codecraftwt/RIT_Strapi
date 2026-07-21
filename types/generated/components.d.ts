@@ -212,6 +212,30 @@ export interface SectionsCourses extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsDepartmentHighlights extends Struct.ComponentSchema {
+  collectionName: 'components_sections_department_highlights';
+  info: {
+    description: 'Row of key department highlight stats like Duration, Eligibility, Twinning, Affiliation, Accreditation';
+    displayName: 'department-highlights';
+    icon: 'star';
+  };
+  attributes: {
+    highlights: Schema.Attribute.Component<'sections.highlight-item', true>;
+  };
+}
+
+export interface SectionsDepartmentInfoCards extends Struct.ComponentSchema {
+  collectionName: 'components_sections_department_info_cards';
+  info: {
+    description: 'Info cards showing head of department, programs, and intake';
+    displayName: 'department-info-cards';
+    icon: 'apps';
+  };
+  attributes: {
+    cards: Schema.Attribute.Component<'sections.info-card', true>;
+  };
+}
+
 export interface SectionsExploreBox extends Struct.ComponentSchema {
   collectionName: 'components_sections_explore_boxes';
   info: {
@@ -345,6 +369,9 @@ export interface SectionsGlobalEducation extends Struct.ComponentSchema {
   attributes: {
     body: Schema.Attribute.Text;
     features: Schema.Attribute.Component<'sections.global-feature', true>;
+    global_image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     heading: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'Global Education'>;
     quote: Schema.Attribute.String;
@@ -398,7 +425,7 @@ export interface SectionsHeroSlide extends Struct.ComponentSchema {
     icon: 'landscape';
   };
   attributes: {
-    heading: Schema.Attribute.String & Schema.Attribute.Required;
+    heading: Schema.Attribute.String;
     image: Schema.Attribute.Media<'images'>;
     link: Schema.Attribute.String;
     sub: Schema.Attribute.String;
@@ -415,6 +442,81 @@ export interface SectionsHeroSlider extends Struct.ComponentSchema {
   };
   attributes: {
     slides: Schema.Attribute.Component<'sections.hero-slide', true>;
+  };
+}
+
+export interface SectionsHighlightItem extends Struct.ComponentSchema {
+  collectionName: 'components_sections_highlight_items';
+  info: {
+    description: 'Single highlight item with icon, label, value, and description';
+    displayName: 'highlight-item';
+    icon: 'information';
+  };
+  attributes: {
+    description: Schema.Attribute.String;
+    icon: Schema.Attribute.Enumeration<
+      [
+        'clock',
+        'graduation',
+        'location',
+        'university',
+        'award',
+        'book',
+        'briefcase',
+        'globe',
+        'users',
+        'shield',
+      ]
+    > &
+      Schema.Attribute.Required;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SectionsHodMessage extends Struct.ComponentSchema {
+  collectionName: 'components_sections_hod_messages';
+  info: {
+    description: 'Head of Department message section with photo, name, designation, and message';
+    displayName: 'hod-message';
+    icon: 'user';
+  };
+  attributes: {
+    department: Schema.Attribute.String;
+    designation: Schema.Attribute.String;
+    eyebrow: Schema.Attribute.String;
+    heading: Schema.Attribute.String;
+    message: Schema.Attribute.Text;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    photo: Schema.Attribute.Media<'images'>;
+  };
+}
+
+export interface SectionsInfoCard extends Struct.ComponentSchema {
+  collectionName: 'components_sections_info_cards';
+  info: {
+    description: 'Single info card with icon, title, and subtitle';
+    displayName: 'info-card';
+    icon: 'file';
+  };
+  attributes: {
+    icon: Schema.Attribute.Enumeration<
+      [
+        'graduation',
+        'book',
+        'briefcase',
+        'users',
+        'award',
+        'clock',
+        'globe',
+        'shield',
+        'university',
+        'location',
+      ]
+    > &
+      Schema.Attribute.Required;
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -636,6 +738,24 @@ export interface SectionsTwinningPrograms extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsVisionMission extends Struct.ComponentSchema {
+  collectionName: 'components_sections_vision_missions';
+  info: {
+    description: 'Vision and Mission section with title, body, and image for each';
+    displayName: 'vision-mission';
+    icon: 'eye';
+  };
+  attributes: {
+    missionBody: Schema.Attribute.Text;
+    missionImage: Schema.Attribute.Media<'images'>;
+    missionTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Mission'>;
+    visionBody: Schema.Attribute.Text;
+    visionImage: Schema.Attribute.Media<'images'>;
+    visionTitle: Schema.Attribute.String & Schema.Attribute.DefaultTo<'Vision'>;
+  };
+}
+
 export interface SectionsWhyChooseRit extends Struct.ComponentSchema {
   collectionName: 'components_sections_why_choose_rits';
   info: {
@@ -667,6 +787,8 @@ declare module '@strapi/strapi' {
       'sections.course-category': SectionsCourseCategory;
       'sections.course-item': SectionsCourseItem;
       'sections.courses': SectionsCourses;
+      'sections.department-highlights': SectionsDepartmentHighlights;
+      'sections.department-info-cards': SectionsDepartmentInfoCards;
       'sections.explore-box': SectionsExploreBox;
       'sections.explore-campus': SectionsExploreCampus;
       'sections.facilities': SectionsFacilities;
@@ -676,6 +798,9 @@ declare module '@strapi/strapi' {
       'sections.global-feature': SectionsGlobalFeature;
       'sections.hero-slide': SectionsHeroSlide;
       'sections.hero-slider': SectionsHeroSlider;
+      'sections.highlight-item': SectionsHighlightItem;
+      'sections.hod-message': SectionsHodMessage;
+      'sections.info-card': SectionsInfoCard;
       'sections.infocus-item': SectionsInfocusItem;
       'sections.infocus-news': SectionsInfocusNews;
       'sections.news-item': SectionsNewsItem;
@@ -688,6 +813,7 @@ declare module '@strapi/strapi' {
       'sections.testimonial-item': SectionsTestimonialItem;
       'sections.testimonials': SectionsTestimonials;
       'sections.twinning-programs': SectionsTwinningPrograms;
+      'sections.vision-mission': SectionsVisionMission;
       'sections.why-choose-rit': SectionsWhyChooseRit;
     }
   }

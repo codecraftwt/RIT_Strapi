@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_department_highlights",
+  "info": {
+    "displayName": "department-highlights",
+    "icon": "star",
+    "description": "Row of key department highlight stats like Duration, Eligibility, Twinning, Affiliation, Accreditation"
+  },
+  "attributes": {
+    "highlights": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.highlight-item"
+    }
+  }
+}

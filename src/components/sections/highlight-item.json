@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sections_highlight_items",
+  "info": {
+    "displayName": "highlight-item",
+    "icon": "information",
+    "description": "Single highlight item with icon, label, value, and description"
+  },
+  "attributes": {
+    "icon": {
+      "type": "enumeration",
+      "enum": ["clock", "graduation", "location", "university", "award", "book", "briefcase", "globe", "users", "shield"],
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

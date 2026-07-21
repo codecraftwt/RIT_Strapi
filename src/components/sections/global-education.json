@@ -11,16 +11,25 @@
       "default": "Global Education"
     },
     "body": {
-      "type": "text",
-      "multiline": true
+      "type": "text"
     },
     "quote": {
       "type": "string"
     },
     "features": {
       "type": "component",
-      "repeatable": true,
-      "component": "sections.global-feature"
+      "component": "sections.global-feature",
+      "repeatable": true
+    },
+    "global_image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

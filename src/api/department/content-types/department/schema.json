@@ -4,7 +4,7 @@
   "info": {
     "singularName": "department",
     "pluralName": "departments",
-    "displayName": "Department",
+    "displayName": "Department Content",
     "description": "Department type with unique navigation and customizable page layout"
   },
   "options": {
@@ -26,8 +26,8 @@
     },
     "menu_items": {
       "type": "component",
-      "repeatable": true,
-      "component": "main-navbar.menu-item"
+      "component": "main-navbar.menu-item",
+      "repeatable": true
     },
     "sections": {
       "type": "dynamiczone",
@@ -47,7 +47,11 @@
         "sections.twinning-programs",
         "sections.placements",
         "sections.notices-announcements",
-        "sections.infocus-news"
+        "sections.infocus-news",
+        "sections.department-highlights",
+        "sections.department-info-cards",
+        "sections.hod-message",
+        "sections.vision-mission"
       ]
     }
   }

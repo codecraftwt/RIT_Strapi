@@ -478,11 +478,48 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiAdminDepartmentAdminDepartment
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'admin_departments';
+  info: {
+    description: 'Maps admin users to their respective departments';
+    displayName: 'Department Admin';
+    pluralName: 'admin-departments';
+    singularName: 'admin-department';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    admin_email: Schema.Attribute.Email & Schema.Attribute.Required;
+    admin_user_id: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    department: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::department.department'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::admin-department.admin-department'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiDepartmentDepartment extends Struct.CollectionTypeSchema {
   collectionName: 'departments';
   info: {
     description: 'Department type with unique navigation and customizable page layout';
-    displayName: 'Department';
+    displayName: 'Department Content';
     pluralName: 'departments';
     singularName: 'department';
   };
@@ -521,6 +558,10 @@ export interface ApiDepartmentDepartment extends Struct.CollectionTypeSchema {
         'sections.placements',
         'sections.notices-announcements',
         'sections.infocus-news',
+        'sections.department-highlights',
+        'sections.department-info-cards',
+        'sections.hod-message',
+        'sections.vision-mission',
       ]
     >;
     slug: Schema.Attribute.String &
@@ -688,6 +729,10 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    department: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::department.department'
+    >;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::page.page'> &
       Schema.Attribute.Private;
@@ -710,6 +755,10 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.placements',
         'sections.notices-announcements',
         'sections.infocus-news',
+        'sections.department-highlights',
+        'sections.department-info-cards',
+        'sections.hod-message',
+        'sections.vision-mission',
       ]
     >;
     slug: Schema.Attribute.String &
@@ -1234,6 +1283,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::admin-department.admin-department': ApiAdminDepartmentAdminDepartment;
       'api::department.department': ApiDepartmentDepartment;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;

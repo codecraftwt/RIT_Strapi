@@ -24,6 +24,11 @@
     "content": {
       "type": "text"
     },
+    "department": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::department.department"
+    },
     "sections": {
       "type": "dynamiczone",
       "components": [
@@ -42,7 +47,11 @@
         "sections.twinning-programs",
         "sections.placements",
         "sections.notices-announcements",
-        "sections.infocus-news"
+        "sections.infocus-news",
+        "sections.department-highlights",
+        "sections.department-info-cards",
+        "sections.hod-message",
+        "sections.vision-mission"
       ]
     }
   }

@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "admin_departments",
+  "info": {
+    "singularName": "admin-department",
+    "pluralName": "admin-departments",
+    "displayName": "Department Admin",
+    "description": "Maps admin users to their respective departments"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "admin_user_id": {
+      "type": "integer",
+      "required": true,
+      "unique": true
+    },
+    "admin_email": {
+      "type": "email",
+      "required": true
+    },
+    "department": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::department.department"
+    }
+  }
+}

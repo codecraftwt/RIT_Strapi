@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_sections_hod_messages",
+  "info": {
+    "displayName": "hod-message",
+    "icon": "user",
+    "description": "Head of Department message section with photo, name, designation, and message"
+  },
+  "attributes": {
+    "eyebrow": {
+      "type": "string"
+    },
+    "heading": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "designation": {
+      "type": "string"
+    },
+    "department": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    }
+  }
+}

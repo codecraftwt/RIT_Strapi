@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_info_cards",
+  "info": {
+    "displayName": "info-card",
+    "icon": "file",
+    "description": "Single info card with icon, title, and subtitle"
+  },
+  "attributes": {
+    "icon": {
+      "type": "enumeration",
+      "enum": ["graduation", "book", "briefcase", "users", "award", "clock", "globe", "shield", "university", "location"],
+      "required": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    }
+  }
+}
