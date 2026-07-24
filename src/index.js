@@ -41,6 +41,7 @@ module.exports = {
     await seedAdminUsers(strapi);
     await seedAdminDepartmentMappings(strapi);
     await seedDeptAdminPermissions(strapi);
+    await seedHomeSections(strapi);
     
     strapi.log.info('Bootstrap complete — content seeded.');
   },
@@ -682,32 +683,241 @@ async function seedPagePermissions(strapi) {
   }
 }
 
-async function seedHomePage(strapi) {
-  const slugs = ['/'];
-  for (const slug of slugs) {
-    const pages = await strapi.db.query('api::page.page').findMany({
-      where: { slug }
-    });
+async function seedHomeSections(strapi) {
+  let homePage = await strapi.db.query('api::page.page').findOne({
+    where: { slug: '/' },
+  });
 
-    if (pages.length > 0) {
-      strapi.log.info(`Home page (${slug}) already exists — skipping page seed.`);
-      continue;
-    }
-
+  if (!homePage) {
     const created = await strapi.documents('api::page.page').create({
-      data: {
-        title: 'Home',
-        slug: '/',
-        content: '',
-        sections: []
-      },
+      data: { title: 'Home', slug: '/', content: '', sections: [] },
     });
-
-    await strapi.documents('api::page.page').publish({
-      documentId: created.documentId
-    });
-    strapi.log.info(`Page Home created, published with empty sections.`);
+    await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+    strapi.log.info('Home page created.');
+    homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
   }
+
+  const existingSections = homePage.sections || [];
+  const existingTypes = new Set(existingSections.map((s) => s.__component));
+
+  if (existingTypes.size > 1) {
+    strapi.log.info(`Home page already has ${existingTypes.size} section types — skipping seed.`);
+    return;
+  }
+
+  const sections = [
+    {
+      __component: 'sections.hero-slider',
+      slides: [
+        { heading: 'Discover More Than Just a Degree', sub: 'Rajarambapu Institute of Technology, Rajaramnagar', videoUrl: 'https://www.youtube.com/watch?v=vCNmisSETMc&t=2s' },
+        { heading: 'Excellence in Engineering Education', sub: 'An Empowered Autonomous Institute' },
+        { heading: 'Building Future Leaders', sub: '43 Acres of Green Campus' },
+        { heading: 'Where Innovation Meets Education', sub: 'NAAC & NBA Accredited Programs' },
+      ],
+    },
+    {
+      __component: 'sections.infocus-news',
+      infocusTitle: 'Campus Spotlight',
+      newsTitle: 'In The Press',
+      infocusItems: [
+        { title: 'RIT Director Dr. P. V. Kadake Receives National Level Eminent Director Award', link: '#' },
+        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
+        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
+        { title: 'National Qawwali Competition – RIT Takes Top Honors', link: '#' },
+        { title: 'ISTD Islampur Chapter (RIT) Receives ISTD Quality Performance Award 2026', link: '#' },
+      ],
+      newsItems: [
+        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
+        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
+        { title: 'Blog Writing Competition at Folk Pravaah State Level Youth Festival 2026', link: '#' },
+        { title: 'Shivaji University Annual Magazine Competition Honors RIT', link: '#' },
+      ],
+    },
+    {
+      __component: 'sections.twinning-programs',
+      eyebrow: 'Twinning Programs',
+      heading: 'TWINNING PROGRAMS AT RIT!',
+      description: 'Rajarambapu Institute of Technology (RIT) got approval from the Government of India, All India Council for Technical Education (AICTE) to offer extensive twinning programs with esteemed foreign universities from all across the globe. These programs aim to provide students with a global education experience, enhancing their academic and professional capabilities through international exposure.',
+      ctaText: 'KNOW MORE',
+      ctaUrl: '#',
+      features: [
+        { title: 'AICTE', desc: 'Approval from the Government of India, All India Council for Technical Education (AICTE).', icon: 'star' },
+        { title: 'Foreign Universities', desc: 'Offer extensive twinning programs with esteemed foreign universities.', icon: 'school' },
+        { title: 'Global Education', desc: 'Aim to provide students with a global education experience.', icon: 'globe' },
+        { title: 'International Exposure', desc: 'Enhancing academic and professional capabilities through international exposure.', icon: 'compass' },
+      ],
+    },
+    {
+      __component: 'sections.about-rit',
+      eyebrow: 'About Our College',
+      heading: 'Welcome To RIT',
+      body: 'Rajarambapu Institute of Technology, Rajaramnagar (formerly known as the College of Engineering, Sakharale), was established in 1983. Situated near Islampur, just 7 km from Peth Naka on the Pune-Bangalore highway, the institute boasts a lush, green campus spread across 43 hectares, with a built-up area of 54,000 square meters. Over the past 43+ years, RIT has earned a reputation as a premier technological institute in Western Maharashtra, thanks to its dedicated and disciplined commitment to delivering quality technical education.',
+      buttonLabel: 'KNOW MORE',
+      buttonHref: '#',
+    },
+    {
+      __component: 'sections.placements',
+      heading: 'PLACEMENT @ 2024-25',
+      items: [
+        { studentName: 'MS. SHREYA KHOCHAGE', quote: 'PROUD MOMENT WITH ISRO - WHERE DREAMS TAKE FLIGHT, AND RIT LIGHTS THE PATH.', packageInfo: '6 Months ISRO Internship', companyName: 'Indian Space Research Organisation (ISRO)', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80' },
+        { studentName: 'MS. DISHA SURYAWANSHI', quote: 'NEXT STOP: CORPORATE WORLD. GRATEFUL FOR THE SUPPORTIVE RIT PLACEMENT CELL.', packageInfo: '9 LPA Placement', companyName: 'Teachnook, Bangalore', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80' },
+        { studentName: 'MR. OMPRASAD KANDE', quote: 'I DREAMED BIG, WORKED HARD, AND GOT PLACED - I DID IT!', packageInfo: '10 LPA Placement', companyName: 'Zensar Technologies', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80' },
+        { studentName: 'MS. DIPTI PATIL', quote: 'FROM RIT TO RELIANCE: MISSION ACCOMPLISHED. THE EDUCATION METRIC WORKED WONDERS.', packageInfo: '7.5 LPA Placement', companyName: 'Reliance Industries', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=600&q=80' },
+      ],
+    },
+    {
+      __component: 'sections.notices-announcements',
+      noticesTitle: 'Notices',
+      announcementsTitle: 'Announcements',
+      notices: [
+        { title: 'Re-Exam Final Time Table FYBTech, FYMBA, FYMCA, FYBBA, SYBBA, FYBCA, FYMTech SYMTech July-Aug 2026', date: '13 Jul 2026', link: '#' },
+        { title: 'Re- Exam Final Time Table July Aug 2026 SYBTech and TYBTech', date: '09 Jul 2026', link: '#' },
+        { title: 'Re-Exam FYBTech, FYMBA, FYMCA, FYBBA, FYBCA, FYMTech Time Table July-Aug 2026', date: '07 Jul 2026', link: '#' },
+        { title: 'Re-Exam Time Table June-July 2026', date: '19 Jun 2026', link: '#' },
+      ],
+      announcements: [
+        { title: 'B.C.A. Against CAP Admission Schedule 2025-26', date: '06 Oct 2025', link: '#' },
+        { title: 'B.B.A Admission for against CAP Vacancy Schedule 2025-26', date: '05 Oct 2025', link: '#' },
+        { title: 'F.Y.B.Tech Institute Level Merit List Round - 2', date: '11 Sep 2025', link: '#' },
+        { title: 'F.Y.B.Tech Against CAP Quota Merit List 2025-26', date: '10 Sep 2025', link: '#' },
+      ],
+    },
+    {
+      __component: 'sections.stats-counter',
+      stats: [
+        { label: 'Alumni', value: 27000, suffix: '+', icon: 'users' },
+        { label: 'Acres Green Campus', value: 43, suffix: '', icon: 'globe' },
+        { label: 'Placements in 2024-25', value: 650, suffix: '+', icon: 'briefcase' },
+        { label: 'Years of Excellence', value: 43, suffix: '+', icon: 'check' },
+      ],
+    },
+    {
+      __component: 'sections.courses',
+      heading: 'Educate. Empower. Excel.',
+      subheading: 'Industry-Relevant Programs',
+      categories: [
+        { name: 'Engineering', courses: [
+          { name: 'B. Tech Civil Engineering', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Computer Engineering', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech AI & ML', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech IT', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Electrical Engineering', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Electronics & Tele-communication', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Mechanical', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Mechatronics', duration: '4 Years', campus: 'On Campus' },
+          { name: 'B. Tech Robotics', duration: '4 Years', campus: 'On Campus' },
+          { name: 'M.Tech Computer Science and Engineering', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Construction Management', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Design Engineering', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Electronics Engineering', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Mechanical Engineering (Thermal Engineering)', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Power Systems and Power Electronics', duration: '2 Years', campus: 'On Campus' },
+          { name: 'M.Tech Structural Engineering', duration: '2 Years', campus: 'On Campus' },
+        ]},
+        { name: 'Diploma', courses: [
+          { name: 'Civil Engineering', duration: '3 Years', campus: 'On Campus' },
+          { name: 'Computer Engineering', duration: '3 Years', campus: 'On Campus' },
+          { name: 'Electrical Engineering', duration: '3 Years', campus: 'On Campus' },
+          { name: 'Mechanical Engineering', duration: '3 Years', campus: 'On Campus' },
+          { name: 'Mechatronics', duration: '3 Years', campus: 'On Campus' },
+        ]},
+        { name: 'Computer Application', courses: [
+          { name: 'BCA', duration: '3 Years', campus: 'On Campus' },
+          { name: 'MCA', duration: '2 Years', campus: 'On Campus' },
+        ]},
+        { name: 'Management', courses: [
+          { name: 'BBA', duration: '3 Years', campus: 'On Campus' },
+          { name: 'MBA', duration: '2 Years', campus: 'On Campus' },
+        ]},
+      ],
+    },
+    {
+      __component: 'sections.why-choose-rit',
+      heading: 'Why Choose RIT',
+      features: [
+        { icon: 'laptop', title: 'NEP', desc: 'New Education Policy helps to achieve Mastery of Learning' },
+        { icon: 'graduation', title: 'Autonomous', desc: 'Institution delivering 21st Century Skills with an Industry 5.0 ready curriculum for future-ready engineers.' },
+        { icon: 'lightbulb', title: 'RCOFT', desc: 'RIT Centre for Future Technology to prepare learners for INDUSTRY 5.0 and enhance Employability and Entrepreneurship.' },
+        { icon: 'bookOpen', title: 'Learning by Doing', desc: 'All subjects are integrated with 50% Practical & Skill Development through PBL & CLAB Class in LAB system.' },
+        { icon: 'heart', title: 'Less is More', desc: 'RIT adopts an innovative, effective, and student-centred learning experience.' },
+        { icon: 'school', title: 'RTLC', desc: 'RIT Teaching Learning Centre provides a Learner Centric Environment for holistic growth.' },
+      ],
+    },
+    {
+      __component: 'sections.testimonials',
+      heading: 'Our Testimonial',
+      items: [
+        { name: 'Mrs. Shreya Kale', dept: 'Student', text: 'I fill proud saying, I\'m Alumini of RIT. Its not only an institute who serves technical & practical knowledge but also motivates against social responsibilities. It is an institute where future life enriches with a good spirit.\n\nI\'ve been passed out from RIT, taking a First Class grade in Diploma in Automobile Engineering (2015-2018). The journey with this institute was amazing.' },
+        { name: 'Miss. Mohini Vijay Shelake (Batch: 2017-18)', dept: 'Student', text: 'Hello everyone I\'m Mohini Shelake, I have completed my diploma in Civil Engineering Department from Rajarambapu Institute of Technology, Rajaramnagar in year 2018. Now I am pursuing Bachelor in Civil Engineering from reputed institute.\n\nWell RIT is an autonomous Institute and in this institute has excellent & highly qualified faculties. RIT follows outcome based education.' },
+        { name: 'Mr. Shahid Yunus Shaikh (Batch: 2019-20)', dept: 'Student', text: 'Hello Everyone I\'m Shahid Yunus Shaikh I have completed my diploma in Civil engineering in 2020 from Rajarambapu Institute of Technology, Rajaramnagar.\n\nI feel very grateful for being passed out from such a highly ranked college in all over India. This Institute has very good and excellent Infrastructure.' },
+        { name: 'Ms. Swarali Sunil Kadam', dept: 'Student', text: 'I have completed diploma at RIT, Rajaramanagar in Electrical Engineering 2020-21.\n\nIt was such a great experience! In RIT they have experienced and talented faculty members. They teach us informative knowledge useful in our future studies.' },
+      ],
+    },
+    {
+      __component: 'sections.facilities',
+      heading: 'World Class Facilities',
+      intro: 'At Rajarambapu Institute of Technology, Rajaramnagar, we go to great lengths to make sure we provide the best infrastructure and facilities for our students. With the right ambience, we can bring out the best potential hidden inside every student. We give the best facilities and ambience to students and expect the best performance from them, in return!',
+      items: [
+        { title: 'Centre for Excellence', desc: 'Top-performing students were honored with medals and certificates for their academic excellence and contributions in research and leadership.' },
+        { title: 'Innovative Learning (IDEA Lab)', desc: 'The Idea Lab is a creative space designed to foster innovation, problem-solving, and hands-on learning. Equipped with tools and resources for prototyping and experimentation, it encourages students to explore new concepts and bring their ideas to life through practical application.' },
+        { title: 'Computer Center', desc: 'RIT features a state-of-the-art centralized computer centre that supports effective learning. It provides students with the opportunity to explore and practice a variety of programming languages and computational skills. Additionally, the centre functions as the core facility for internet access and network connectivity across the campus.' },
+        { title: 'Library', desc: 'The first library of its kind in Western Maharashtra, it is extensively equipped and spacious, catering to academic and research needs across all disciplines. It offers a wide collection of books, journals, and digital resources to enhance learning and knowledge. The library provides a quiet and conducive environment for study and research.' },
+        { title: 'Conference Hall', desc: 'The campus includes three spacious and well-equipped conference halls, ideal for hosting seminars, workshops, and academic events. Each hall is fitted with modern audio-visual systems and interactive panels to enhance presentations and facilitate engaging discussions.' },
+        { title: 'State of Art Labs', desc: 'The campus features state-of-the-art laboratories designed to provide hands-on experience across various disciplines. Equipped with advanced instruments and modern technology, these labs support practical learning, innovation, and research activities.' },
+        { title: 'Gymnasium', desc: 'The modern gymnasium building offers a spacious and well-lit environment equipped with state-of-the-art fitness equipment. It provides students and staff with excellent facilities for physical fitness, wellness, and recreation. The contemporary design and serene surroundings create an inviting atmosphere for regular workouts.' },
+        { title: 'Lecture Recording Studio', desc: 'A dedicated Lecture Recording Studio is available, equipped with advanced audio-visual technology to produce high-quality educational content. It allows faculty to record lectures efficiently, supporting online, hybrid, and self-paced learning. This facility enhances accessibility and engagement for students beyond the classroom.' },
+        { title: 'International Hostel', desc: 'The Hostel offers a comfortable and secure living environment for students from abroad. It is designed with modern amenities, ensuring a homely atmosphere that supports both academic focus and cultural integration. The hostel promotes a global community experience on campus.' },
+      ],
+    },
+    {
+      __component: 'sections.explore-campus',
+      heading: 'Explore the Campus',
+      boxes: [
+        { icon: 'camera', label: 'Photo Gallery' },
+        { icon: 'play', label: 'Video Gallery' },
+        { icon: 'home', label: 'Hostel' },
+        { icon: 'office', label: 'Guest House' },
+        { icon: 'bookOpen', label: 'Library' },
+        { icon: 'heart', label: 'Gymnasium' },
+      ],
+    },
+    {
+      __component: 'sections.campus-life',
+      heading: 'Campus Life',
+      body: 'Experience vibrant campus life at RIT with modern amenities, green spaces, and a thriving student community.',
+    },
+    {
+      __component: 'sections.global-education',
+      heading: 'Global Education',
+      body: 'RIT has established global partnerships with leading international universities and organizations for academic exchange, joint research, and collaborative programs.',
+      quote: 'Global exchange of culture and knowledge opens doors to fresh perspectives.',
+      features: [
+        { label: '50+ Partnerships', icon: 'users' },
+        { label: 'Global Events', icon: 'globe' },
+        { label: 'Advisory Board', icon: 'school' },
+        { label: '1000+ Students Trained', icon: 'list' },
+      ],
+    },
+    {
+      __component: 'sections.accreditations',
+      heading: 'Accreditations & Recognitions',
+      items: [
+        { name: 'AICTE', abbr: 'AICTE' },
+        { name: 'UGC', abbr: 'UGC' },
+        { name: 'DTE', abbr: 'DTE' },
+        { name: 'Shivaji University', abbr: 'SU' },
+        { name: 'NAAC', abbr: 'NAAC' },
+        { name: 'NBA', abbr: 'NBA' },
+      ],
+    },
+  ];
+
+  await strapi.documents('api::page.page').update({
+    documentId: homePage.documentId,
+    data: { sections },
+  });
+
+  strapi.log.info(`Home page seeded with ${sections.length} sections.`);
 }
 
 async function seedDepartments(strapi) {
@@ -885,5 +1095,9 @@ async function seedDeptAdminPermissions(strapi) {
     });
   }
 
-  strapi.log.info('Seeded permissions for Dept Admin role.');
+    strapi.log.info('Seeded permissions for Dept Admin role.');
 }
+
+
+
+
