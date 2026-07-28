@@ -37,13 +37,20 @@ module.exports = {
       return;
     }
 
-    await seedAdminRoles(strapi);
-    await seedAdminUsers(strapi);
-    await seedAdminDepartmentMappings(strapi);
-    await seedDeptAdminPermissions(strapi);
-    await seedHomeSections(strapi);
-    
-    strapi.log.info('Bootstrap complete — content seeded.');
+    // await seedAdminRoles(strapi);
+    // await seedAdminUsers(strapi);
+    // await seedAdminDepartmentMappings(strapi);
+    // await seedDeptAdminPermissions(strapi);
+    // await seedHomeSections(strapi);
+    // await seedAboutRitSection(strapi);
+    // await seedDiplomas(strapi);
+    await seedPlacements(strapi);
+    await seedCourses(strapi);
+    await seedTestimonials(strapi);
+    await seedToppersChoice(strapi);
+    await seedHappeningNow(strapi);
+
+    strapi.log.info('Bootstrap complete — placements, courses, testimonials, toppers choice + happening now seeded.');
   },
 };
 
@@ -66,6 +73,8 @@ async function seedPermissions(strapi) {
     'api::footer.footer.find',
     'api::department.department.find',
     'api::department.department.findOne',
+    'api::diploma.diploma.find',
+    'api::diploma.diploma.findOne',
   ];
 
   for (const action of actions) {
@@ -336,17 +345,17 @@ async function seedMainNavbar(strapi) {
     },
     {
       label: 'Diploma',
-      href: '#',
+      href: '/diploma',
       dropdown_items: [
-        { label: 'Diploma', href: '#' },
-        { label: 'Science & Humanities', href: '#' },
-        { label: 'Automobile Engineering', href: '#' },
-        { label: 'Civil Engineering', href: '#' },
-        { label: 'Mechanical Engineering', href: '#' },
-        { label: 'Electrical Engineering', href: '#' },
-        { label: 'Computer Engineering', href: '#' },
-        { label: 'Computer Hardware and Maintenance', href: '#' },
-        { label: 'Mechatronics', href: '#' }
+        { label: 'Diploma', href: '/diploma' },
+        { label: 'Science & Humanities', href: '/diploma/diploma-sciences-humanities' },
+        { label: 'Automobile Engineering', href: '/diploma/diploma-automobile-engineering' },
+        { label: 'Civil Engineering', href: '/diploma/diploma-civil-engineering' },
+        { label: 'Mechanical Engineering', href: '/diploma/diploma-mechanical-engineering' },
+        { label: 'Electrical Engineering', href: '/diploma/diploma-electrical-engineering' },
+        { label: 'Computer Engineering', href: '/diploma/diploma-computer-engineering' },
+        { label: 'Computer Hardware and Maintenance', href: '/diploma/diploma-computer-hardware-maintenance' },
+        { label: 'Mechatronics', href: '/diploma/diploma-mechatronics' }
       ]
     },
     {
@@ -716,24 +725,6 @@ async function seedHomeSections(strapi) {
       ],
     },
     {
-      __component: 'sections.infocus-news',
-      infocusTitle: 'Campus Spotlight',
-      newsTitle: 'In The Press',
-      infocusItems: [
-        { title: 'RIT Director Dr. P. V. Kadake Receives National Level Eminent Director Award', link: '#' },
-        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
-        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
-        { title: 'National Qawwali Competition – RIT Takes Top Honors', link: '#' },
-        { title: 'ISTD Islampur Chapter (RIT) Receives ISTD Quality Performance Award 2026', link: '#' },
-      ],
-      newsItems: [
-        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
-        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
-        { title: 'Blog Writing Competition at Folk Pravaah State Level Youth Festival 2026', link: '#' },
-        { title: 'Shivaji University Annual Magazine Competition Honors RIT', link: '#' },
-      ],
-    },
-    {
       __component: 'sections.twinning-programs',
       eyebrow: 'Twinning Programs',
       heading: 'TWINNING PROGRAMS AT RIT!',
@@ -780,15 +771,6 @@ async function seedHomeSections(strapi) {
         { title: 'B.B.A Admission for against CAP Vacancy Schedule 2025-26', date: '05 Oct 2025', link: '#' },
         { title: 'F.Y.B.Tech Institute Level Merit List Round - 2', date: '11 Sep 2025', link: '#' },
         { title: 'F.Y.B.Tech Against CAP Quota Merit List 2025-26', date: '10 Sep 2025', link: '#' },
-      ],
-    },
-    {
-      __component: 'sections.stats-counter',
-      stats: [
-        { label: 'Alumni', value: 27000, suffix: '+', icon: 'users' },
-        { label: 'Acres Green Campus', value: 43, suffix: '', icon: 'globe' },
-        { label: 'Placements in 2024-25', value: 650, suffix: '+', icon: 'briefcase' },
-        { label: 'Years of Excellence', value: 43, suffix: '+', icon: 'check' },
       ],
     },
     {
@@ -844,13 +826,21 @@ async function seedHomeSections(strapi) {
       ],
     },
     {
-      __component: 'sections.testimonials',
-      heading: 'Our Testimonial',
-      items: [
-        { name: 'Mrs. Shreya Kale', dept: 'Student', text: 'I fill proud saying, I\'m Alumini of RIT. Its not only an institute who serves technical & practical knowledge but also motivates against social responsibilities. It is an institute where future life enriches with a good spirit.\n\nI\'ve been passed out from RIT, taking a First Class grade in Diploma in Automobile Engineering (2015-2018). The journey with this institute was amazing.' },
-        { name: 'Miss. Mohini Vijay Shelake (Batch: 2017-18)', dept: 'Student', text: 'Hello everyone I\'m Mohini Shelake, I have completed my diploma in Civil Engineering Department from Rajarambapu Institute of Technology, Rajaramnagar in year 2018. Now I am pursuing Bachelor in Civil Engineering from reputed institute.\n\nWell RIT is an autonomous Institute and in this institute has excellent & highly qualified faculties. RIT follows outcome based education.' },
-        { name: 'Mr. Shahid Yunus Shaikh (Batch: 2019-20)', dept: 'Student', text: 'Hello Everyone I\'m Shahid Yunus Shaikh I have completed my diploma in Civil engineering in 2020 from Rajarambapu Institute of Technology, Rajaramnagar.\n\nI feel very grateful for being passed out from such a highly ranked college in all over India. This Institute has very good and excellent Infrastructure.' },
-        { name: 'Ms. Swarali Sunil Kadam', dept: 'Student', text: 'I have completed diploma at RIT, Rajaramanagar in Electrical Engineering 2020-21.\n\nIt was such a great experience! In RIT they have experienced and talented faculty members. They teach us informative knowledge useful in our future studies.' },
+      __component: 'sections.infocus-news',
+      infocusTitle: 'Campus Spotlight',
+      newsTitle: 'In The Press',
+      infocusItems: [
+        { title: 'RIT Director Dr. P. V. Kadake Receives National Level Eminent Director Award', link: '#' },
+        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
+        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
+        { title: 'National Qawwali Competition – RIT Takes Top Honors', link: '#' },
+        { title: 'ISTD Islampur Chapter (RIT) Receives ISTD Quality Performance Award 2026', link: '#' },
+      ],
+      newsItems: [
+        { title: '33 RIT Students Selected for Bharat Forge', link: '#' },
+        { title: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026', link: '#' },
+        { title: 'Blog Writing Competition at Folk Pravaah State Level Youth Festival 2026', link: '#' },
+        { title: 'Shivaji University Annual Magazine Competition Honors RIT', link: '#' },
       ],
     },
     {
@@ -867,6 +857,18 @@ async function seedHomeSections(strapi) {
         { title: 'Gymnasium', desc: 'The modern gymnasium building offers a spacious and well-lit environment equipped with state-of-the-art fitness equipment. It provides students and staff with excellent facilities for physical fitness, wellness, and recreation. The contemporary design and serene surroundings create an inviting atmosphere for regular workouts.' },
         { title: 'Lecture Recording Studio', desc: 'A dedicated Lecture Recording Studio is available, equipped with advanced audio-visual technology to produce high-quality educational content. It allows faculty to record lectures efficiently, supporting online, hybrid, and self-paced learning. This facility enhances accessibility and engagement for students beyond the classroom.' },
         { title: 'International Hostel', desc: 'The Hostel offers a comfortable and secure living environment for students from abroad. It is designed with modern amenities, ensuring a homely atmosphere that supports both academic focus and cultural integration. The hostel promotes a global community experience on campus.' },
+      ],
+    },
+    {
+      __component: 'sections.global-education',
+      heading: 'Global Education',
+      body: 'RIT has established global partnerships with leading international universities and organizations for academic exchange, joint research, and collaborative programs.',
+      quote: 'Global exchange of culture and knowledge opens doors to fresh perspectives.',
+      features: [
+        { label: '50+ Partnerships', icon: 'users' },
+        { label: 'Global Events', icon: 'globe' },
+        { label: 'Advisory Board', icon: 'school' },
+        { label: '1000+ Students Trained', icon: 'list' },
       ],
     },
     {
@@ -887,15 +889,12 @@ async function seedHomeSections(strapi) {
       body: 'Experience vibrant campus life at RIT with modern amenities, green spaces, and a thriving student community.',
     },
     {
-      __component: 'sections.global-education',
-      heading: 'Global Education',
-      body: 'RIT has established global partnerships with leading international universities and organizations for academic exchange, joint research, and collaborative programs.',
-      quote: 'Global exchange of culture and knowledge opens doors to fresh perspectives.',
-      features: [
-        { label: '50+ Partnerships', icon: 'users' },
-        { label: 'Global Events', icon: 'globe' },
-        { label: 'Advisory Board', icon: 'school' },
-        { label: '1000+ Students Trained', icon: 'list' },
+      __component: 'sections.stats-counter',
+      stats: [
+        { label: 'Alumni', value: 27000, suffix: '+', icon: 'users' },
+        { label: 'Acres Green Campus', value: 43, suffix: '', icon: 'globe' },
+        { label: 'Placements in 2024-25', value: 650, suffix: '+', icon: 'briefcase' },
+        { label: 'Years of Excellence', value: 43, suffix: '+', icon: 'check' },
       ],
     },
     {
@@ -910,6 +909,16 @@ async function seedHomeSections(strapi) {
         { name: 'NBA', abbr: 'NBA' },
       ],
     },
+    {
+      __component: 'sections.testimonials',
+      heading: 'Our Testimonial',
+      items: [
+        { name: 'Mrs. Shreya Kale', dept: 'Student', text: 'I fill proud saying, I\'m Alumini of RIT. Its not only an institute who serves technical & practical knowledge but also motivates against social responsibilities. It is an institute where future life enriches with a good spirit.\n\nI\'ve been passed out from RIT, taking a First Class grade in Diploma in Automobile Engineering (2015-2018). The journey with this institute was amazing.' },
+        { name: 'Miss. Mohini Vijay Shelake (Batch: 2017-18)', dept: 'Student', text: 'Hello everyone I\'m Mohini Shelake, I have completed my diploma in Civil Engineering Department from Rajarambapu Institute of Technology, Rajaramnagar in year 2018. Now I am pursuing Bachelor in Civil Engineering from reputed institute.\n\nWell RIT is an autonomous Institute and in this institute has excellent & highly qualified faculties. RIT follows outcome based education.' },
+        { name: 'Mr. Shahid Yunus Shaikh (Batch: 2019-20)', dept: 'Student', text: 'Hello Everyone I\'m Shahid Yunus Shaikh I have completed my diploma in Civil engineering in 2020 from Rajarambapu Institute of Technology, Rajaramnagar.\n\nI feel very grateful for being passed out from such a highly ranked college in all over India. This Institute has very good and excellent Infrastructure.' },
+        { name: 'Ms. Swarali Sunil Kadam', dept: 'Student', text: 'I have completed diploma at RIT, Rajaramanagar in Electrical Engineering 2020-21.\n\nIt was such a great experience! In RIT they have experienced and talented faculty members. They teach us informative knowledge useful in our future studies.' },
+      ],
+    },
   ];
 
   await strapi.documents('api::page.page').update({
@@ -917,7 +926,86 @@ async function seedHomeSections(strapi) {
     data: { sections },
   });
 
-  strapi.log.info(`Home page seeded with ${sections.length} sections.`);
+  await strapi.documents('api::page.page').publish({
+    documentId: homePage.documentId,
+  });
+
+  strapi.log.info(`Home page seeded with ${sections.length} sections and published.`);
+}
+
+async function seedAboutRitSection(strapi) {
+  try {
+    const homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+    if (!homePage) {
+      strapi.log.warn('seedAboutRitSection: Home page not found — skipping.');
+      return;
+    }
+
+    // Check if about-rit already exists in the draft (which has the actual sections)
+    const existingAboutRit = await strapi.db.connection.raw(
+      `SELECT pc.id FROM pages_cmps pc
+       JOIN components_sections_about_rits csar ON pc.cmp_id = csar.id
+       WHERE pc.entity_id = ? AND pc.component_type = 'sections.about-rit' LIMIT 1`,
+      [homePage.id]
+    );
+    if (existingAboutRit.rows.length > 0) {
+      strapi.log.info('seedAboutRitSection: sections.about-rit already exists on home page — skipping.');
+      return;
+    }
+
+    // Read current sections via document service (draft version)
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const hasAboutRit = currentSections.some(s => s.__component === 'sections.about-rit');
+    if (hasAboutRit) {
+      strapi.log.info('seedAboutRitSection: sections.about-rit already exists (doc service check) — skipping.');
+      return;
+    }
+
+    // Find twinning-programs index
+    const twinningIdx = currentSections.findIndex(s => s.__component === 'sections.twinning-programs');
+    if (twinningIdx === -1) {
+      strapi.log.warn('seedAboutRitSection: sections.twinning-programs not found — skipping.');
+      return;
+    }
+
+    // Build new sections array with about-rit inserted after twinning-programs
+    const aboutRitSection = {
+      __component: 'sections.about-rit',
+      eyebrow: 'About Our College',
+      heading: 'Welcome To RIT',
+      body: 'Rajarambapu Institute of Technology, Rajaramnagar (formerly known as the College of Engineering, Sakharale), was established in 1983. Situated near Islampur, just 7 km from Peth Naka on the Pune-Bangalore highway, the institute boasts a lush, green campus spread across 43 hectares, with a built-up area of 54,000 square meters. Over the past 43+ years, RIT has earned a reputation as a premier technological institute in Western Maharashtra, thanks to its dedicated and disciplined commitment to delivering quality technical education.',
+      buttonLabel: 'KNOW MORE',
+      buttonHref: '#',
+    };
+
+    const newSections = [
+      ...currentSections.slice(0, twinningIdx + 1),
+      aboutRitSection,
+      ...currentSections.slice(twinningIdx + 1),
+    ];
+
+    // Update draft with new sections
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    // Publish
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('seedAboutRitSection: sections.about-rit inserted after twinning-programs and published.');
+  } catch (err) {
+    strapi.log.warn(`seedAboutRitSection error: ${err.message}`);
+  }
 }
 
 async function seedDepartments(strapi) {
@@ -1053,6 +1141,633 @@ async function seedAdminDepartmentMappings(strapi) {
         strapi.log.info(`Mapped ${user.email} to ${dept.name}`);
       }
     }
+  }
+}
+
+async function seedPlacements(strapi) {
+  try {
+    let homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+
+    if (!homePage) {
+      const created = await strapi.documents('api::page.page').create({
+        data: { title: 'Home', slug: '/', content: '', sections: [] },
+      });
+      await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+      homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
+    }
+
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const placementsIdx = currentSections.findIndex(s => s.__component === 'sections.placements');
+
+    const placementSection = {
+      __component: 'sections.placements',
+      heading: 'PLACEMENT @ 2025-26',
+      items: [
+        { studentName: 'MS. SHREYA KHOCHAGE', quote: 'PROUD MOMENT WITH ISRO - WHERE DREAMS TAKE FLIGHT, AND RIT LIGHTS THE PATH.', packageInfo: '6 Months ISRO Internship', companyName: 'Indian Space Research Organisation (ISRO)', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80' },
+        { studentName: 'MS. DISHA SURYAWANSHI', quote: 'NEXT STOP: CORPORATE WORLD. GRATEFUL FOR THE SUPPORTIVE RIT PLACEMENT CELL.', packageInfo: '9 LPA Placement', companyName: 'Teachnook, Bangalore', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80' },
+        { studentName: 'MR. OMPRASAD KANDE', quote: 'I DREAMED BIG, WORKED HARD, AND GOT PLACED - I DID IT!', packageInfo: '10 LPA Placement', companyName: 'Zensar Technologies', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80' },
+        { studentName: 'MS. DIPTI PATIL', quote: 'FROM RIT TO RELIANCE: MISSION ACCOMPLISHED. THE EDUCATION METRIC WORKED WONDERS.', packageInfo: '7.5 LPA Placement', companyName: 'Reliance Industries', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=600&q=80' },
+        { studentName: 'MR. ADITYA SHINDE', quote: 'RIT PREPARED ME FOR THE REAL WORLD. THE PLACEMENT TRAINING WAS A GAME CHANGER.', packageInfo: '8 LPA Placement', companyName: 'Tata Consultancy Services', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=80' },
+        { studentName: 'MS. PRIYA PATIL', quote: 'FROM CLASSROOM TO CORPORATE - RIT MADE IT POSSIBLE.', packageInfo: '6.5 LPA Placement', companyName: 'Wipro Technologies', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80' },
+        { studentName: 'MR. RAHUL JADHAV', quote: 'THE SKILLS I LEARNED AT RIT HELPED ME STAND OUT IN THE INTERVIEW.', packageInfo: '12 LPA Placement', companyName: 'Infosys Limited', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=80' },
+        { studentName: 'MS. SNEHA MORE', quote: 'GRATEFUL FOR THE SUPPORTIVE FACULTY AND THE PLACEMENT CELL AT RIT.', packageInfo: '7 LPA Placement', companyName: 'Cognizant Technology Solutions', companyLogoUrl: '', studentPhotoUrl: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=80' },
+      ],
+    };
+
+    let newSections;
+    if (placementsIdx !== -1) {
+      newSections = [...currentSections];
+      newSections[placementsIdx] = placementSection;
+    } else {
+      newSections = [...currentSections, placementSection];
+    }
+
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('Placements section seeded/updated with PLACEMENT @ 2025-26 data.');
+  } catch (err) {
+    strapi.log.warn(`seedPlacements error: ${err.message}`);
+  }
+}
+
+async function seedCourses(strapi) {
+  try {
+    let homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+
+    if (!homePage) {
+      const created = await strapi.documents('api::page.page').create({
+        data: { title: 'Home', slug: '/', content: '', sections: [] },
+      });
+      await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+      homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
+    }
+
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const coursesIdx = currentSections.findIndex(s => s.__component === 'sections.courses');
+
+    const coursesSection = {
+      __component: 'sections.courses',
+      heading: 'Educate. Empower. Excel.',
+      subheading: 'Industry-Relevant Programs',
+      categories: [
+        {
+          name: 'Engineering',
+          courses: [
+            { name: 'B. Tech Civil Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Computer Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech AI & ML', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech IT', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Electrical Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Electronics & Tele-communication', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Mechanical', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Mechatronics', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Robotics', duration: '4 Years', campus: 'On Campus' },
+            { name: 'M.Tech Computer Science and Engineering', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Construction Management', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Design Engineering', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Electronics Engineering', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Mechanical Engineering (Thermal Engineering)', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Power Systems and Power Electronics', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M.Tech Structural Engineering', duration: '2 Years', campus: 'On Campus' },
+          ],
+        },
+        {
+          name: 'Diploma',
+          courses: [
+            { name: 'Civil Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Computer Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Electrical Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Mechanical Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Mechatronics', duration: '3 Years', campus: 'On Campus' },
+          ],
+        },
+        {
+          name: 'Computer Application',
+          courses: [
+            { name: 'BCA', duration: '3/4 Years', campus: 'On Campus' },
+            { name: 'MCA', duration: '2 Years', campus: 'On Campus' },
+          ],
+        },
+        {
+          name: 'Management',
+          courses: [
+            { name: 'BBA', duration: '3/4 Years', campus: 'On Campus' },
+            { name: 'MBA', duration: '2 Years', campus: 'On Campus' },
+          ],
+        },
+        {
+          name: 'Twinning Program',
+          courses: [
+            { name: 'B. Tech Mechanical Engineering', duration: '2+2 / 2+3 Years', campus: 'On Campus 2 Years + Partner University 2/3 Years' },
+            { name: 'B. Tech Civil Engineering', duration: '2+2 / 2+3 Years', campus: 'On Campus 2 Years + Partner University 2/3 Years' },
+            { name: 'B. Tech Computer Engineering', duration: '2+2 / 2+3 Years', campus: 'On Campus 2 Years + Partner University 2/3 Years' },
+            { name: 'B. Tech Electrical Engineering', duration: '2+2 / 2+3 Years', campus: 'On Campus 2 Years + Partner University 2/3 Years' },
+            { name: 'B. Tech Electronics & Telecommunication', duration: '2+2 / 2+3 Years', campus: 'On Campus 2 Years + Partner University 2/3 Years' },
+            { name: 'M. Tech Computer Science and Engineering', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M. Tech Design Engineering', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M. Tech Electronics Engineering', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M. Tech Mechanical Engineering (Thermal)', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M. Tech Power Systems and Power Electronics', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M. Tech Structural Engineering', duration: '1+1 Years', campus: 'On Campus 1 Year + Partner University 1 Year' },
+            { name: 'M.B.A', duration: '2 Years', campus: 'On Campus' },
+          ],
+        },
+        {
+          name: 'Working Professional',
+          courses: [
+            { name: 'Diploma Civil Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Diploma Electrical Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'Diploma Mechanical Engineering', duration: '3 Years', campus: 'On Campus' },
+            { name: 'B. Tech Computer Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Electronics and Telecommunication Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'B. Tech Mechanical Engineering', duration: '4 Years', campus: 'On Campus' },
+            { name: 'M. Tech Structural Engineering', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M. Tech Computer Science and Engineering', duration: '2 Years', campus: 'On Campus' },
+            { name: 'M. Tech Power Systems and Power Electronics', duration: '2 Years', campus: 'On Campus' },
+          ],
+        },
+      ],
+    };
+
+    let newSections;
+    if (coursesIdx !== -1) {
+      newSections = [...currentSections];
+      newSections[coursesIdx] = coursesSection;
+    } else {
+      newSections = [...currentSections, coursesSection];
+    }
+
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('Courses section seeded/updated with all 6 categories.');
+  } catch (err) {
+    strapi.log.warn(`seedCourses error: ${err.message}`);
+  }
+}
+
+async function seedTestimonials(strapi) {
+  try {
+    let homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+
+    if (!homePage) {
+      const created = await strapi.documents('api::page.page').create({
+        data: { title: 'Home', slug: '/', content: '', sections: [] },
+      });
+      await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+      homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
+    }
+
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const testimonialsIdx = currentSections.findIndex(s => s.__component === 'sections.testimonials');
+
+    const testimonialsSection = {
+      __component: 'sections.testimonials',
+      heading: 'Our Testimonial',
+      items: [
+        {
+          name: 'Mr. Shreyash Kale',
+          dept: 'Student',
+          text: "I fill proud saying, I'm Alumini of RIT. Its not only an institute who serves technical & practical knowledge but also motivates against social responsibilities. It is an institute where future life enriches with a good spirit.\n\nI've been passed out from RIT, taking a First Class grade in Diploma in Automobile Engineering (2015-2018). The journey with this institute was amazing, with supportive faculty and a great learning environment.",
+        },
+        {
+          name: 'Miss. Mohini Vijay Shelake (Batch: 2017-18)',
+          dept: 'Student',
+          text: "Hello everyone I'm Mohini Shelake, I have completed my diploma in Civil Engineering Department from Rajarambapu Institute of Technology, Rajaramnagar in year 2018. Now I am pursuing Bachelor in Civil Engineering from reputed institute.\n\nWell RIT is an autonomous Institute and in this institute has excellent & highly qualified faculties. RIT follows outcome based education which helps students understand concepts better.",
+        },
+        {
+          name: 'Mr. Shahid Yunus Shaikh (Batch: 2019-20)',
+          dept: 'Student',
+          text: "Hello Everyone I'm Shahid Yunus Shaikh I have completed my diploma in Civil engineering in 2020 from Rajarambapu Institute of Technology, Rajaramnagar.\n\nI feel very grateful for being passed out from such a highly ranked college in all over India. This Institute has very good and excellent Infrastructure. It also has highly qualified teachers and conducts outcome based learning.",
+        },
+        {
+          name: 'Adarsh G. Jagtap',
+          dept: 'Student',
+          text: "As RITian I feel very proud that I have been a part of this truly developing institute. I am very thankful to experienced and talented faculties to enhance my skills throughout the course and moulding my personality in a right way.\n\nAll faculties are not only delivering the best but also motivating to make us socially responsible citizens by their super powerful thoughts. I am very glad that I am a part of RIT.",
+        },
+        {
+          name: 'Nikhil Prakash Shendage',
+          dept: 'Student',
+          text: "I am very glad while giving this note. After the parents the person who really cares you is a teacher. hugeness of college depends mainly upon the students and teachers, because both gives important contribution for calling it as best college.\n\nThese college days is one of my best days in my whole life, because it really gives the feeling like we are in home. Also our institute has excellent facilities.",
+        },
+        {
+          name: 'Ms. Swarali Sunil Kadam',
+          dept: 'Student',
+          text: "I have completed diploma at RIT, Rajaramanagar in Electrical Engineering 2020-21.\n\nIt was such a great experience! In RIT they have experienced and talented faculty members. They teach us informative knowledge useful in our future studies. One of the many things I like about RIT is that they teach us till we understood the particular concept.",
+        },
+        {
+          name: 'Ms. Yogita Gaikwad',
+          dept: 'Student',
+          text: "Hi I'm Yogita Gaikwad. Recently I've completed my diploma in electrical engineering from Rajarambapu Institute of Technology. Campus is peaceful and very good for students. All facilities are provided for students like Internet, Gymkhana etc.\n\nThe college has huge library with technical as well as non-technical books. Our electrical department has talented, enthusiastic and supportive faculty members.",
+        },
+        {
+          name: 'Ms. Monali Jayprakash Patil',
+          dept: 'Student',
+          text: "I have completed diploma in RIT, Rajaramanagar, in electrical engineering in 2018-19.\n\nIt was such a great experience! RIT has experienced and talented faculty members, who gave us very informative knowledge not only from books, but they gave us some extra knowledge and information about further education. I have learnt a lot from each and every faculty of RIT.",
+        },
+        {
+          name: 'Mr. Sourabh V. Londhe',
+          dept: 'Student',
+          text: "Hello everyone I'm Sourabh Londhe. I have completed my diploma in electrical engineering from Rajarambapu Institute of Technology in year 2018. Presently I'm studying engineering in Pune.\n\nThe campus of RIT College is very good for education. This electrical department has very good quality of teachers, they are kind towards each and every individual also they are very much supportive.",
+        },
+        {
+          name: 'Mr. Varadraj Bhargav Jadhav',
+          dept: 'Student',
+          text: "I have completed diploma at RIT, Rajaramanagar in Electrical Engineering 2021-22.\n\nAll the faculty members of RIT are experienced and talented. They not only teach informative knowledge useful in our exam but also many more which is needed for being good human. RIT gives me the platform for more job opportunities, future studies and to pursue sustainable career.",
+        },
+        {
+          name: 'Aayuti Chougule',
+          dept: 'B. Tech',
+          text: "My experience at RIT has been wonderful. The college provides excellent academic support and has a great campus environment. The faculty members are knowledgeable and always ready to help students. I am grateful for the opportunities RIT has given me.",
+        },
+        {
+          name: 'Ms. Prajakta Devidas Suryawanshi',
+          dept: 'Recruitment Associate (Grade-2)',
+          text: "My experience at RIT MBA is great and memorable. The mentors helped enhance my academic and interpersonal skills. I am thankful to Training & Placement cell for providing a platform to enhance my skills and for organising placements in this pandemic and helping students get placed.\n\nThe infrastructure of RIT is one of the finest. It was my immense luck and fortune to be the part of RIT.",
+        },
+        {
+          name: 'Pratiksha Kore',
+          dept: 'Relationship Manager at ICICI Bank, Pune',
+          text: "Dear Friends, Greetings…!!!\n\nGetting placed during the college is a dream for all the students and this dream came to reality when I got placed in ICICI BANK. I and my parents are really thankful to the management and college authorities for making my dream come into reality. I got placed in ICICI Bank as a Relationship Manager.\n\nI feel, it is because of the efforts put by our faculty and placement cell.",
+        },
+        {
+          name: 'Aishwarya Patil',
+          dept: 'Entrepreneur',
+          text: "I feel proud that I was one of the student of MBA at RIT. The college library and surrounding environment was very good that always gave me positive energy.\n\nWe have the best faculty team who provides a 360 degree support to the students. The department has made me to gain knowledge about business, ethics, personality and professionalism. My doubts and queries were always welcomed.",
+        },
+        {
+          name: 'Dhiraj Nine',
+          dept: 'Department Manager, Dmart Avenue Supermarts Ltd.',
+          text: "RIT has been a great contributor to the development of my personality. I have established my leadership, time management and team skills and have also been able to advance these skills to the whole new level.\n\nThe infrastructure of RIT, especially the library is one of the finest in the region. The best thing about RIT is the cross-culture interaction between students from various parts of the country.",
+        },
+        {
+          name: 'Anuradha Kumbhar',
+          dept: 'Student',
+          text: "My time at RIT has been a wonderful journey. The college provides a great learning environment with supportive faculty and excellent infrastructure. I am grateful for the knowledge and skills I have gained here.",
+        },
+        {
+          name: 'Swapnagandha Patil',
+          dept: 'Research Executive, The Research Insights',
+          text: "I am proud to have been an MBA student at RIT. The college library and the surrounding environment were exceptional, consistently providing me with positive energy and a conducive atmosphere for learning.\n\nThe faculty team at RIT is outstanding, offering comprehensive support to students. The department has equipped me with extensive knowledge about business, ethics, personality development, and professionalism.",
+        },
+        {
+          name: 'Aaditi Jadhav',
+          dept: 'Customer Experience Executive HDFC Bank, Satara',
+          text: "My time in the RIT MBA program has been incredible and unforgettable. The mentors greatly improved my academic and interpersonal skills. I'm grateful to the Training & Placement cell for providing opportunities to develop my skills and for organizing placements during the pandemic, helping students secure jobs.\n\nRIT's infrastructure is top-notch. I feel very fortunate to be part of RIT.",
+        },
+      ],
+    };
+
+    let newSections;
+    if (testimonialsIdx !== -1) {
+      newSections = [...currentSections];
+      newSections[testimonialsIdx] = testimonialsSection;
+    } else {
+      newSections = [...currentSections, testimonialsSection];
+    }
+
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('Testimonials section seeded/updated with 18 testimonials.');
+  } catch (err) {
+    strapi.log.warn(`seedTestimonials error: ${err.message}`);
+  }
+}
+
+async function seedToppersChoice(strapi) {
+  try {
+    let homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+
+    if (!homePage) {
+      const created = await strapi.documents('api::page.page').create({
+        data: { title: 'Home', slug: '/', content: '', sections: [] },
+      });
+      await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+      homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
+    }
+
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const toppersIdx = currentSections.findIndex(s => s.__component === 'sections.toppers-choice');
+
+    const toppersSection = {
+      __component: 'sections.toppers-choice',
+      heading: "TOPPERS' TOP CHOICE.",
+      subheading: 'EXPERIENTIAL LEARNING.',
+      yellowHeading: 'FANTABULOUS CAMPUS.',
+      body: 'RIT is the most preferred institution for high ranking students. With industry-relevant curriculum, project based learning, high energy faculty, corporate-like facilities, best amenities and vibrant activities, RIT is the most sought after institution for high quality and holistic education.',
+      highlightText: 'TOP PLACEMENTS COLLEGE!',
+      buttonLabel: 'KNOW MORE',
+      buttonHref: '#',
+      gridItems: [
+        {
+          cardType: 'image',
+          imageWidth: 'full',
+          marginTop: '20px',
+        },
+        {
+          cardType: 'image',
+          imageWidth: 'full',
+        },
+        {
+          cardType: 'image',
+          imageWidth: 'full',
+        },
+        {
+          cardType: 'image',
+          imageWidth: 'full',
+        },
+        {
+          cardType: 'blue',
+          text: 'RANKED IN NIRF 2024\n201 - 300 BAND\nUNDER ENGINEERING CATEGORY',
+        },
+      ],
+    };
+
+    let newSections;
+    if (toppersIdx !== -1) {
+      newSections = [...currentSections];
+      newSections[toppersIdx] = toppersSection;
+    } else {
+      newSections = [...currentSections, toppersSection];
+    }
+
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('Toppers Choice section seeded/updated.');
+  } catch (err) {
+    strapi.log.warn(`seedToppersChoice error: ${err.message}`);
+  }
+}
+
+async function seedHappeningNow(strapi) {
+  try {
+    let homePage = await strapi.db.query('api::page.page').findOne({
+      where: { slug: '/' },
+    });
+
+    if (!homePage) {
+      const created = await strapi.documents('api::page.page').create({
+        data: { title: 'Home', slug: '/', content: '', sections: [] },
+      });
+      await strapi.documents('api::page.page').publish({ documentId: created.documentId });
+      homePage = await strapi.db.query('api::page.page').findOne({ where: { slug: '/' } });
+    }
+
+    const draft = await strapi.documents('api::page.page').findOne({
+      documentId: homePage.documentId,
+      populate: ['sections'],
+    });
+
+    const currentSections = draft?.sections || [];
+    const happeningIdx = currentSections.findIndex(s => s.__component === 'sections.happening-now');
+
+    const happeningSection = {
+      __component: 'sections.happening-now',
+      heading: 'Happening Now @ RIT',
+      eventsTitle: 'Upcoming Events & Conference',
+      achievementsTitle: 'Achievement',
+      events: [
+        {
+          month: 'Aug',
+          date: '22',
+          title: 'Alumni Get-Together of Silver Jubilee Batches – 2000 and 2001 with all Seniors',
+          organizer: 'Rajarambapu Institute of Technology, Rajaramnagar',
+          link: '#',
+        },
+        {
+          month: 'Sep',
+          date: '15',
+          title: 'National Conference on Emerging Trends in Engineering and Technology (NCETET 2026)',
+          organizer: 'RIT Department of Computer Science & Engineering',
+          link: '#',
+        },
+        {
+          month: 'Oct',
+          date: '05',
+          title: 'Annual Tech Festival — RITAGE 2026',
+          organizer: 'RIT Student Technical Council',
+          link: '#',
+        },
+      ],
+      achievements: [
+        {
+          heading: '33 RIT Students Selected for Bharat Forge',
+          link: '#',
+        },
+        {
+          heading: 'RIT Dance Club Secures 1st Rank at Vasant Karandak 2026',
+          link: '#',
+        },
+        {
+          heading: 'National Qawwali Competition – RIT Takes Top Honors',
+          link: '#',
+        },
+        {
+          heading: 'ISTD Islampur Chapter (RIT) Receives ISTD Quality Performance Award 2026',
+          link: '#',
+        },
+      ],
+    };
+
+    let newSections;
+    if (happeningIdx !== -1) {
+      newSections = [...currentSections];
+      newSections[happeningIdx] = happeningSection;
+    } else {
+      newSections = [...currentSections, happeningSection];
+    }
+
+    await strapi.documents('api::page.page').update({
+      documentId: homePage.documentId,
+      data: { sections: newSections },
+    });
+
+    await strapi.documents('api::page.page').publish({
+      documentId: homePage.documentId,
+    });
+
+    strapi.log.info('Happening Now section seeded/updated with 3 events + 4 achievements.');
+  } catch (err) {
+    strapi.log.warn(`seedHappeningNow error: ${err.message}`);
+  }
+}
+
+async function seedDiplomas(strapi) {
+  try {
+    const tableCheck = await strapi.db.connection.raw(
+      "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'diplomas')"
+    );
+    if (!tableCheck.rows[0].exists) {
+      strapi.log.warn('diplomas table does not yet exist — skipping diploma seed.');
+      return;
+    }
+
+    const diplomasData = [
+      { name: 'Science & Humanities', slug: 'diploma-sciences-humanities' },
+      { name: 'Automobile Engineering', slug: 'diploma-automobile-engineering' },
+      { name: 'Civil Engineering', slug: 'diploma-civil-engineering' },
+      { name: 'Mechanical Engineering', slug: 'diploma-mechanical-engineering' },
+      { name: 'Electrical Engineering', slug: 'diploma-electrical-engineering' },
+      { name: 'Computer Engineering', slug: 'diploma-computer-engineering' },
+      { name: 'Computer Hardware & Maintenance', slug: 'diploma-computer-hardware-maintenance' },
+      { name: 'Mechatronics', slug: 'diploma-mechatronics' },
+    ];
+
+    const defaultSections = (name) => [
+      {
+        __component: 'sections.about-rit',
+        eyebrow: 'About the Program',
+        heading: `Diploma in ${name}`,
+        body: `The Diploma program in ${name} at RIT provides students with a strong foundation in technical knowledge and practical skills. Our experienced faculty and state-of-the-art labs ensure students are well-prepared for industry challenges.`,
+        buttonLabel: 'KNOW MORE',
+        buttonHref: '#',
+      },
+      {
+        __component: 'sections.hod-message',
+        heading: "HOD's Message",
+        message: `Welcome to the Department of ${name}. Our dedicated team of faculty members is committed to providing quality education and hands-on experience to our diploma students. We focus on building strong technical fundamentals alongside practical skills.`,
+        name: 'Head of Department',
+        designation: `HOD, Diploma in ${name}`,
+        photo: '',
+      },
+      {
+        __component: 'sections.stats-counter',
+        stats: [
+          { label: 'Students Enrolled', value: 120, suffix: '+', icon: 'users' },
+          { label: 'Faculty Members', value: 8, suffix: '+', icon: 'school' },
+          { label: 'Placement Rate', value: 85, suffix: '%', icon: 'briefcase' },
+          { label: 'Years Running', value: 10, suffix: '+', icon: 'check' },
+        ],
+      },
+    ];
+
+    for (const diploma of diplomasData) {
+      const checkResult = await strapi.db.connection.raw(
+        'SELECT id FROM diplomas WHERE slug = ?',
+        [diploma.slug]
+      );
+
+      if (checkResult.rows.length > 0) {
+        strapi.log.info(`Diploma already exists, skipping: ${diploma.name}`);
+        continue;
+      }
+
+      const crypto = require('crypto');
+      const docId = crypto.randomBytes(12).toString('base64url').slice(0, 25);
+      const insertResult = await strapi.db.connection.raw(
+        'INSERT INTO diplomas (name, slug, description, document_id, locale, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW()) RETURNING id',
+        [diploma.name, diploma.slug, `Welcome to the Diploma program in ${diploma.name}.`, docId, 'en']
+      );
+      const diplomaId = insertResult.rows[0].id;
+
+      const sections = defaultSections(diploma.name);
+      let order = 1;
+
+      for (const section of sections) {
+        if (section.__component === 'sections.about-rit') {
+          const cmpResult = await strapi.db.connection.raw(
+            'INSERT INTO components_sections_about_rits (eyebrow, heading, body, button_label, button_href) VALUES (?, ?, ?, ?, ?) RETURNING id',
+            [section.eyebrow, section.heading, section.body, section.buttonLabel, section.buttonHref]
+          );
+          await strapi.db.connection.raw(
+            'INSERT INTO diplomas_cmps (entity_id, cmp_id, component_type, field, "order") VALUES (?, ?, ?, ?, ?)',
+            [diplomaId, cmpResult.rows[0].id, 'sections.about-rit', 'sections', order]
+          );
+        } else if (section.__component === 'sections.hod-message') {
+          const cmpResult = await strapi.db.connection.raw(
+            'INSERT INTO components_sections_hod_messages (heading, name, designation, message) VALUES (?, ?, ?, ?) RETURNING id',
+            [section.heading, section.name, section.designation, section.message]
+          );
+          await strapi.db.connection.raw(
+            'INSERT INTO diplomas_cmps (entity_id, cmp_id, component_type, field, "order") VALUES (?, ?, ?, ?, ?)',
+            [diplomaId, cmpResult.rows[0].id, 'sections.hod-message', 'sections', order]
+          );
+        } else if (section.__component === 'sections.stats-counter') {
+          const cmpResult = await strapi.db.connection.raw(
+            'INSERT INTO components_sections_stats_counters DEFAULT VALUES RETURNING id'
+          );
+          const statsCounterId = cmpResult.rows[0].id;
+
+          let statOrder = 1;
+          for (const stat of section.stats) {
+            const statResult = await strapi.db.connection.raw(
+              'INSERT INTO components_sections_stat_items (label, value, suffix, icon) VALUES (?, ?, ?, ?) RETURNING id',
+              [stat.label, stat.value, stat.suffix, stat.icon]
+            );
+            await strapi.db.connection.raw(
+              'INSERT INTO components_sections_stats_counters_cmps (entity_id, cmp_id, component_type, field, "order") VALUES (?, ?, ?, ?, ?)',
+              [statsCounterId, statResult.rows[0].id, 'sections.stat-item', 'stats', statOrder]
+            );
+            statOrder++;
+          }
+
+          await strapi.db.connection.raw(
+            'INSERT INTO diplomas_cmps (entity_id, cmp_id, component_type, field, "order") VALUES (?, ?, ?, ?, ?)',
+            [diplomaId, statsCounterId, 'sections.stats-counter', 'sections', order]
+          );
+        }
+        order++;
+      }
+
+      strapi.log.info(`Diploma seeded: ${diploma.name}`);
+    }
+  } catch (err) {
+    strapi.log.warn(`Diploma seed error: ${err.message}`);
   }
 }
 

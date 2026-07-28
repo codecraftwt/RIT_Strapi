@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_sections_happening_now_events",
+  "info": {
+    "displayName": "happening-now-event",
+    "icon": "calendar",
+    "description": "Individual event card in the happening now section"
+  },
+  "attributes": {
+    "month": {
+      "type": "string",
+      "required": true
+    },
+    "date": {
+      "type": "string"
+    },
+    "title": {
+      "type": "text",
+      "required": true
+    },
+    "organizer": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

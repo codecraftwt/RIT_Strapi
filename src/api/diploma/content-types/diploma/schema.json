@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "diplomas",
+  "info": {
+    "singularName": "diploma",
+    "pluralName": "diplomas",
+    "displayName": "Diploma Content",
+    "description": "Diploma program with customizable page layout"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "sections": {
+      "type": "dynamiczone",
+      "components": [
+        "sections.about-rit",
+        "sections.hod-message",
+        "sections.stats-counter"
+      ]
+    }
+  }
+}

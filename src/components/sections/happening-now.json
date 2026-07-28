@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_sections_happening_nows",
+  "info": {
+    "displayName": "happening-now",
+    "icon": "bolt",
+    "description": "Happening Now section with events and achievements"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Happening Now @ RIT"
+    },
+    "eventsTitle": {
+      "type": "string",
+      "default": "Upcoming Events & Conference"
+    },
+    "achievementsTitle": {
+      "type": "string",
+      "default": "Achievement"
+    },
+    "events": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.happening-now-event"
+    },
+    "achievements": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.happening-now-achievement"
+    }
+  }
+}

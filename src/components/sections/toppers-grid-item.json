@@ -1,0 +1,30 @@
+{
+  "collectionName": "components_sections_toppers_grid_items",
+  "info": {
+    "displayName": "toppers-grid-item",
+    "icon": "grid",
+    "description": "Individual card in the toppers choice grid"
+  },
+  "attributes": {
+    "cardType": {
+      "type": "enumeration",
+      "enum": ["yellow", "blue", "lightblue", "image"],
+      "required": true
+    },
+    "text": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "imageWidth": {
+      "type": "string",
+      "default": "full"
+    },
+    "marginTop": {
+      "type": "string"
+    }
+  }
+}

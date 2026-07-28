@@ -1,0 +1,41 @@
+{
+  "collectionName": "components_sections_toppers_choices",
+  "info": {
+    "displayName": "toppers-choice",
+    "icon": "star",
+    "description": "Toppers' top choice section with heading, body, CTA and grid cards"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true,
+      "default": "TOPPERS' TOP CHOICE."
+    },
+    "subheading": {
+      "type": "string"
+    },
+    "yellowHeading": {
+      "type": "string"
+    },
+    "body": {
+      "type": "text",
+      "required": true
+    },
+    "highlightText": {
+      "type": "string"
+    },
+    "buttonLabel": {
+      "type": "string",
+      "default": "KNOW MORE"
+    },
+    "buttonHref": {
+      "type": "string",
+      "default": "#"
+    },
+    "gridItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.toppers-grid-item"
+    }
+  }
+}

@@ -41,7 +41,9 @@ module.exports = ({ env }) => ({
       },
 
       actionOptions: {
-        upload: {},
+        upload: {
+          folder: 'rit-website',
+        },
         delete: {},
       },
 

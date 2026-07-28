@@ -573,6 +573,42 @@ export interface ApiDepartmentDepartment extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiDiplomaDiploma extends Struct.CollectionTypeSchema {
+  collectionName: 'diplomas';
+  info: {
+    description: 'Diploma program with customizable page layout';
+    displayName: 'Diploma Content';
+    pluralName: 'diplomas';
+    singularName: 'diploma';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::diploma.diploma'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    sections: Schema.Attribute.DynamicZone<
+      ['sections.about-rit', 'sections.hod-message', 'sections.stats-counter']
+    >;
+    slug: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiFooterFooter extends Struct.SingleTypeSchema {
   collectionName: 'footers';
   info: {
@@ -759,6 +795,8 @@ export interface ApiPagePage extends Struct.CollectionTypeSchema {
         'sections.department-info-cards',
         'sections.hod-message',
         'sections.vision-mission',
+        'sections.toppers-choice',
+        'sections.happening-now',
       ]
     >;
     slug: Schema.Attribute.String &
@@ -1285,6 +1323,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::admin-department.admin-department': ApiAdminDepartmentAdminDepartment;
       'api::department.department': ApiDepartmentDepartment;
+      'api::diploma.diploma': ApiDiplomaDiploma;
       'api::footer.footer': ApiFooterFooter;
       'api::header.header': ApiHeaderHeader;
       'api::main-navbar.main-navbar': ApiMainNavbarMainNavbar;

@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_sections_happening_now_achievements",
+  "info": {
+    "displayName": "happening-now-achievement",
+    "icon": "trophy",
+    "description": "Individual achievement banner with heading and image"
+  },
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "link": {
+      "type": "string"
+    }
+  }
+}

@@ -10,7 +10,7 @@
     "heading": {
       "type": "string",
       "required": true,
-      "default": "PLACEMENT @ 2024-25"
+      "default": "PLACEMENT @ 2025-26"
     },
     "items": {
       "type": "component",

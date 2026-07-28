@@ -417,6 +417,60 @@ export interface SectionsGlobalFeature extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsHappeningNow extends Struct.ComponentSchema {
+  collectionName: 'components_sections_happening_nows';
+  info: {
+    description: 'Happening Now section with events and achievements';
+    displayName: 'happening-now';
+    icon: 'bolt';
+  };
+  attributes: {
+    achievements: Schema.Attribute.Component<
+      'sections.happening-now-achievement',
+      true
+    >;
+    achievementsTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Achievement'>;
+    events: Schema.Attribute.Component<'sections.happening-now-event', true>;
+    eventsTitle: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Upcoming Events & Conference'>;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Happening Now @ RIT'>;
+  };
+}
+
+export interface SectionsHappeningNowAchievement
+  extends Struct.ComponentSchema {
+  collectionName: 'components_sections_happening_now_achievements';
+  info: {
+    description: 'Individual achievement banner with heading and image';
+    displayName: 'happening-now-achievement';
+    icon: 'trophy';
+  };
+  attributes: {
+    heading: Schema.Attribute.String & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
+    link: Schema.Attribute.String;
+  };
+}
+
+export interface SectionsHappeningNowEvent extends Struct.ComponentSchema {
+  collectionName: 'components_sections_happening_now_events';
+  info: {
+    description: 'Individual event card in the happening now section';
+    displayName: 'happening-now-event';
+    icon: 'calendar';
+  };
+  attributes: {
+    date: Schema.Attribute.String;
+    image: Schema.Attribute.Media<'images'>;
+    link: Schema.Attribute.String;
+    month: Schema.Attribute.String & Schema.Attribute.Required;
+    organizer: Schema.Attribute.String;
+    title: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
 export interface SectionsHeroSlide extends Struct.ComponentSchema {
   collectionName: 'components_sections_hero_slides';
   info: {
@@ -629,7 +683,7 @@ export interface SectionsPlacements extends Struct.ComponentSchema {
   attributes: {
     heading: Schema.Attribute.String &
       Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'PLACEMENT @ 2024-25'>;
+      Schema.Attribute.DefaultTo<'PLACEMENT @ 2025-26'>;
     items: Schema.Attribute.Component<'sections.placement-item', true>;
   };
 }
@@ -716,6 +770,47 @@ export interface SectionsTestimonials extends Struct.ComponentSchema {
   };
 }
 
+export interface SectionsToppersChoice extends Struct.ComponentSchema {
+  collectionName: 'components_sections_toppers_choices';
+  info: {
+    description: "Toppers' top choice section with heading, body, CTA and grid cards";
+    displayName: 'toppers-choice';
+    icon: 'star';
+  };
+  attributes: {
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    buttonHref: Schema.Attribute.String & Schema.Attribute.DefaultTo<'#'>;
+    buttonLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'KNOW MORE'>;
+    gridItems: Schema.Attribute.Component<'sections.toppers-grid-item', true>;
+    heading: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<"TOPPERS' TOP CHOICE.">;
+    highlightText: Schema.Attribute.String;
+    subheading: Schema.Attribute.String;
+    yellowHeading: Schema.Attribute.String;
+  };
+}
+
+export interface SectionsToppersGridItem extends Struct.ComponentSchema {
+  collectionName: 'components_sections_toppers_grid_items';
+  info: {
+    description: 'Individual card in the toppers choice grid';
+    displayName: 'toppers-grid-item';
+    icon: 'grid';
+  };
+  attributes: {
+    cardType: Schema.Attribute.Enumeration<
+      ['yellow', 'blue', 'lightblue', 'image']
+    > &
+      Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'>;
+    imageWidth: Schema.Attribute.String & Schema.Attribute.DefaultTo<'full'>;
+    marginTop: Schema.Attribute.String;
+    text: Schema.Attribute.Text;
+  };
+}
+
 export interface SectionsTwinningPrograms extends Struct.ComponentSchema {
   collectionName: 'components_sections_twinning_programs';
   info: {
@@ -796,6 +891,9 @@ declare module '@strapi/strapi' {
       'sections.feature-item': SectionsFeatureItem;
       'sections.global-education': SectionsGlobalEducation;
       'sections.global-feature': SectionsGlobalFeature;
+      'sections.happening-now': SectionsHappeningNow;
+      'sections.happening-now-achievement': SectionsHappeningNowAchievement;
+      'sections.happening-now-event': SectionsHappeningNowEvent;
       'sections.hero-slide': SectionsHeroSlide;
       'sections.hero-slider': SectionsHeroSlider;
       'sections.highlight-item': SectionsHighlightItem;
@@ -812,6 +910,8 @@ declare module '@strapi/strapi' {
       'sections.stats-counter': SectionsStatsCounter;
       'sections.testimonial-item': SectionsTestimonialItem;
       'sections.testimonials': SectionsTestimonials;
+      'sections.toppers-choice': SectionsToppersChoice;
+      'sections.toppers-grid-item': SectionsToppersGridItem;
       'sections.twinning-programs': SectionsTwinningPrograms;
       'sections.vision-mission': SectionsVisionMission;
       'sections.why-choose-rit': SectionsWhyChooseRit;

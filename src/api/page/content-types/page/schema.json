@@ -51,7 +51,9 @@
         "sections.department-highlights",
         "sections.department-info-cards",
         "sections.hod-message",
-        "sections.vision-mission"
+        "sections.vision-mission",
+        "sections.toppers-choice",
+        "sections.happening-now"
       ]
     }
   }
