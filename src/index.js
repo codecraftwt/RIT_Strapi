@@ -32,6 +32,20 @@ module.exports = {
       },
     });
 
+    await strapi.admin.services.permission.conditionProvider.register({
+      displayName: 'Is Dept Admin for Diploma',
+      name: 'is-dept-admin-for-diploma',
+      plugin: 'admin',
+      async handler(user) {
+        const mapping = await strapi.db.query('api::admin-diploma.admin-diploma').findOne({
+          where: { admin_user_id: user.id },
+          populate: ['diploma'],
+        });
+        if (!mapping || !mapping.diploma) return false;
+        return { documentId: mapping.diploma.documentId };
+      },
+    });
+
     if (process.env.FORCE_SEED !== 'true') {
       strapi.log.info('Database seeding is disabled. Start the server with FORCE_SEED=true to seed resources.');
       return;
@@ -44,13 +58,27 @@ module.exports = {
     // await seedHomeSections(strapi);
     // await seedAboutRitSection(strapi);
     // await seedDiplomas(strapi);
-    await seedPlacements(strapi);
-    await seedCourses(strapi);
-    await seedTestimonials(strapi);
-    await seedToppersChoice(strapi);
-    await seedHappeningNow(strapi);
+    // await seedPlacements(strapi);
+    // await seedCourses(strapi);
+    // await seedTestimonials(strapi);
+    // await seedToppersChoice(strapi);
+    // await seedHappeningNow(strapi);
 
-    strapi.log.info('Bootstrap complete — placements, courses, testimonials, toppers choice + happening now seeded.');
+    // Grant public API permissions (find/findOne on all content types) — no content changes
+    // await seedPermissions(strapi);
+
+    // const diplomaRole = await seedDiplomaAdminRole(strapi);
+    // await seedDiplomaAdminUsers(strapi);
+    // await seedAdminDiplomaMappings(strapi);
+    // await seedDiplomaAdminPermissions(strapi);
+
+    // Normalize diploma slugs (remove / and /diploma/ prefix)
+    // await fixDiplomaSlugs(strapi);
+
+    // Update main-navbar with correct diploma hrefs (no homepage/media changes)
+    // await seedMainNavbar(strapi);
+
+    strapi.log.info('Bootstrap complete — diploma RBAC + slug fix + navbar href fix seeded. Homepage/content seeding disabled.');
   },
 };
 
@@ -669,6 +697,40 @@ async function seedMainNavbar(strapi) {
       },
     });
     strapi.log.info('Main Navbar seeded.');
+  }
+}
+
+async function fixDiplomaSlugs(strapi) {
+  try {
+    const entries = await strapi.db.query('api::diploma.diploma').findMany();
+    let fixed = 0;
+    for (const entry of entries) {
+      let slug = (entry.slug || '').trim();
+      const original = slug;
+
+      // Skip if already correct format (diploma-xxx, no leading slash)
+      if (/^diploma-/.test(slug) || slug === 'diploma') continue;
+
+      // /diploma/xxx → diploma-xxx
+      slug = slug.replace(/^\/?diploma\//, 'diploma-');
+      // /diploma-xxx → diploma-xxx (remove leading slash)
+      slug = slug.replace(/^\//, '');
+      // xxx (no diploma- prefix) → diploma-xxx
+      if (!/^diploma-/.test(slug)) {
+        slug = 'diploma-' + slug;
+      }
+      if (slug !== original) {
+        await strapi.db.query('api::diploma.diploma').update({
+          where: { id: entry.id },
+          data: { slug },
+        });
+        strapi.log.info(`Fixed diploma slug: "${original}" → "${slug}"`);
+        fixed++;
+      }
+    }
+    strapi.log.info(`Diploma slug normalization complete — ${fixed} slugs fixed.`);
+  } catch (err) {
+    strapi.log.warn(`fixDiplomaSlugs error: ${err.message}`);
   }
 }
 
@@ -1811,6 +1873,133 @@ async function seedDeptAdminPermissions(strapi) {
   }
 
     strapi.log.info('Seeded permissions for Dept Admin role.');
+}
+
+async function seedDiplomaAdminRole(strapi) {
+  let role = await strapi.db.query('admin::role').findOne({ where: { code: 'strapi-diploma-admin' } });
+  if (!role) {
+    role = await strapi.db.query('admin::role').create({
+      data: {
+        name: 'Diploma Admin (HOD)',
+        code: 'strapi-diploma-admin',
+        description: 'Diploma Admin — can only access their own diploma program',
+      }
+    });
+    strapi.log.info('Created Diploma Admin role.');
+  }
+  return role;
+}
+
+async function seedDiplomaAdminUsers(strapi) {
+  const bcrypt = require('bcryptjs');
+  const role = await strapi.db.query('admin::role').findOne({ where: { code: 'strapi-diploma-admin' } });
+  if (!role) {
+    strapi.log.warn('Diploma Admin role not found — skipping diploma admin user seed.');
+    return;
+  }
+
+  const users = [
+    { email: 'diploma-science.hod@ritindia.edu', firstname: 'Dip-Science', lastname: 'HOD', username: 'diploma-science.hod' },
+    { email: 'diploma-auto.hod@ritindia.edu', firstname: 'Dip-Auto', lastname: 'HOD', username: 'diploma-auto.hod' },
+    { email: 'diploma-civil.hod@ritindia.edu', firstname: 'Dip-Civil', lastname: 'HOD', username: 'diploma-civil.hod' },
+    { email: 'diploma-mech.hod@ritindia.edu', firstname: 'Dip-Mech', lastname: 'HOD', username: 'diploma-mech.hod' },
+    { email: 'diploma-electrical.hod@ritindia.edu', firstname: 'Dip-Electrical', lastname: 'HOD', username: 'diploma-electrical.hod' },
+    { email: 'diploma-cse.hod@ritindia.edu', firstname: 'Dip-CSE', lastname: 'HOD', username: 'diploma-cse.hod' },
+    { email: 'diploma-chm.hod@ritindia.edu', firstname: 'Dip-CHM', lastname: 'HOD', username: 'diploma-chm.hod' },
+    { email: 'diploma-mechatronics.hod@ritindia.edu', firstname: 'Dip-Mechatronics', lastname: 'HOD', username: 'diploma-mechatronics.hod' },
+  ];
+
+  const passwordHash = await bcrypt.hash('Admin@123', 10);
+
+  for (const u of users) {
+    const exists = await strapi.db.query('admin::user').findOne({ where: { email: u.email } });
+    if (!exists) {
+      await strapi.db.query('admin::user').create({
+        data: {
+          ...u,
+          password: passwordHash,
+          isActive: true,
+          roles: [role.id],
+        }
+      });
+      strapi.log.info(`Created diploma admin user: ${u.email}`);
+    } else {
+      await strapi.db.query('admin::user').update({
+        where: { id: exists.id },
+        data: { roles: [role.id] }
+      });
+    }
+  }
+}
+
+async function seedAdminDiplomaMappings(strapi) {
+  const mappings = [
+    { email: 'diploma-science.hod@ritindia.edu', diplomaSlug: 'diploma-sciences-humanities' },
+    { email: 'diploma-auto.hod@ritindia.edu', diplomaSlug: 'diploma-automobile-engineering' },
+    { email: 'diploma-civil.hod@ritindia.edu', diplomaSlug: 'diploma-civil-engineering' },
+    { email: 'diploma-mech.hod@ritindia.edu', diplomaSlug: 'diploma-mechanical-engineering' },
+    { email: 'diploma-electrical.hod@ritindia.edu', diplomaSlug: 'diploma-electrical-engineering' },
+    { email: 'diploma-cse.hod@ritindia.edu', diplomaSlug: 'diploma-computer-engineering' },
+    { email: 'diploma-chm.hod@ritindia.edu', diplomaSlug: 'diploma-computer-hardware-maintenance' },
+    { email: 'diploma-mechatronics.hod@ritindia.edu', diplomaSlug: 'diploma-mechatronics' },
+  ];
+
+  for (const m of mappings) {
+    const user = await strapi.db.query('admin::user').findOne({ where: { email: m.email } });
+    const diploma = await strapi.db.query('api::diploma.diploma').findOne({ where: { slug: m.diplomaSlug } });
+
+    if (user && diploma) {
+      const exists = await strapi.db.query('api::admin-diploma.admin-diploma').findOne({ where: { admin_user_id: user.id } });
+      if (!exists) {
+        await strapi.documents('api::admin-diploma.admin-diploma').create({
+          data: {
+            admin_user_id: user.id,
+            admin_email: user.email,
+            diploma: diploma.documentId,
+          }
+        });
+        strapi.log.info(`Mapped ${user.email} to ${diploma.name}`);
+      }
+    }
+  }
+}
+
+async function seedDiplomaAdminPermissions(strapi) {
+  const role = await strapi.db.query('admin::role').findOne({ where: { code: 'strapi-diploma-admin' } });
+  if (!role) return;
+
+  const permissions = [
+    { action: 'plugin::content-manager.explorer.read', subject: 'api::diploma.diploma', conditions: ['admin::is-dept-admin-for-diploma'] },
+    { action: 'plugin::content-manager.explorer.update', subject: 'api::diploma.diploma', conditions: ['admin::is-dept-admin-for-diploma'] },
+    { action: 'plugin::content-manager.explorer.create', subject: 'api::diploma.diploma', conditions: ['admin::is-dept-admin-for-diploma'] },
+    { action: 'plugin::content-manager.explorer.delete', subject: 'api::diploma.diploma', conditions: ['admin::is-dept-admin-for-diploma'] },
+    { action: 'plugin::upload.read', subject: null },
+    { action: 'plugin::upload.assets.create', subject: null },
+    { action: 'plugin::upload.assets.update', subject: null },
+    { action: 'plugin::upload.assets.download', subject: null },
+    { action: 'plugin::upload.assets.copy-link', subject: null },
+  ];
+
+  for (const perm of permissions) {
+    const existing = await strapi.db.query('admin::permission').findOne({
+      where: {
+        action: perm.action,
+        subject: perm.subject,
+        role: role.id,
+      }
+    });
+    if (!existing) {
+      await strapi.db.query('admin::permission').create({
+        data: {
+          action: perm.action,
+          subject: perm.subject,
+          conditions: perm.conditions || [],
+          role: role.id,
+        }
+      });
+      strapi.log.info(`Granted diploma permission: ${perm.action} on ${perm.subject || 'null'}`);
+    }
+  }
 }
 
 

@@ -13,9 +13,15 @@ const register = (app) => {
             (r) => r.code === 'strapi-dept-admin' || r.name === 'Dept Admin (HOD)'
           );
 
-        if (isDeptAdmin) {
+        const isDiplomaAdmin =
+          ctx.user?.roles?.some(
+            (r) => r.code === 'strapi-diploma-admin' || r.name === 'Diploma Admin (HOD)'
+          );
+
+        if (isDeptAdmin || isDiplomaAdmin) {
           return result.filter((p) => {
             if (p.subject === 'api::admin-department.admin-department') return false;
+            if (p.subject === 'api::admin-diploma.admin-diploma') return false;
             if (p.subject === 'api::header.header') return false;
             if (p.subject === 'api::footer.footer') return false;
             if (p.subject === 'api::main-navbar.main-navbar') return false;

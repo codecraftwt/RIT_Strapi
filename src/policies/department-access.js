@@ -51,9 +51,46 @@ const checkDepartmentAccess = async (strapi, user, departmentDocumentId) => {
   return mapping.department.documentId === departmentDocumentId;
 };
 
+/**
+ * Helper function to get the diploma documentId for a user.
+ * Returns null for Super Admins (they can access all diplomas).
+ */
+const getUserDiplomaId = async (strapi, user) => {
+  if (!user) return null;
+
+  if (isSuperAdmin(user)) return null;
+
+  const mapping = await strapi.db.query('api::admin-diploma.admin-diploma').findOne({
+    where: { admin_user_id: user.id },
+    populate: ['diploma'],
+  });
+
+  return mapping?.diploma?.documentId || null;
+};
+
+/**
+ * Helper function to check if a user can access a specific diploma's content.
+ */
+const checkDiplomaAccess = async (strapi, user, diplomaDocumentId) => {
+  if (!user) return false;
+
+  if (isSuperAdmin(user)) return true;
+
+  const mapping = await strapi.db.query('api::admin-diploma.admin-diploma').findOne({
+    where: { admin_user_id: user.id },
+    populate: ['diploma'],
+  });
+
+  if (!mapping || !mapping.diploma) return false;
+
+  return mapping.diploma.documentId === diplomaDocumentId;
+};
+
 module.exports = {
   isSuperAdmin,
   isDeptAdmin,
   getUserDepartmentId,
   checkDepartmentAccess,
+  getUserDiplomaId,
+  checkDiplomaAccess,
 };

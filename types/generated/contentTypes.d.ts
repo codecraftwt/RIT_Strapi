@@ -515,6 +515,40 @@ export interface ApiAdminDepartmentAdminDepartment
   };
 }
 
+export interface ApiAdminDiplomaAdminDiploma
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'admin_diplomas';
+  info: {
+    description: 'Maps admin users to their respective diploma programs';
+    displayName: 'Diploma Admin';
+    pluralName: 'admin-diplomas';
+    singularName: 'admin-diploma';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    admin_email: Schema.Attribute.Email & Schema.Attribute.Required;
+    admin_user_id: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    diploma: Schema.Attribute.Relation<'manyToOne', 'api::diploma.diploma'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::admin-diploma.admin-diploma'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiDepartmentDepartment extends Struct.CollectionTypeSchema {
   collectionName: 'departments';
   info: {
@@ -595,10 +629,32 @@ export interface ApiDiplomaDiploma extends Struct.CollectionTypeSchema {
       'api::diploma.diploma'
     > &
       Schema.Attribute.Private;
+    menu_items: Schema.Attribute.Component<'main-navbar.menu-item', true>;
     name: Schema.Attribute.String & Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     sections: Schema.Attribute.DynamicZone<
-      ['sections.about-rit', 'sections.hod-message', 'sections.stats-counter']
+      [
+        'sections.hero-slider',
+        'sections.about-content',
+        'sections.about-rit',
+        'sections.campus-life',
+        'sections.accreditations',
+        'sections.testimonials',
+        'sections.facilities',
+        'sections.explore-campus',
+        'sections.global-education',
+        'sections.why-choose-rit',
+        'sections.stats-counter',
+        'sections.courses',
+        'sections.twinning-programs',
+        'sections.placements',
+        'sections.notices-announcements',
+        'sections.infocus-news',
+        'sections.department-highlights',
+        'sections.department-info-cards',
+        'sections.hod-message',
+        'sections.vision-mission',
+      ]
     >;
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -1322,6 +1378,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::admin-department.admin-department': ApiAdminDepartmentAdminDepartment;
+      'api::admin-diploma.admin-diploma': ApiAdminDiplomaAdminDiploma;
       'api::department.department': ApiDepartmentDepartment;
       'api::diploma.diploma': ApiDiplomaDiploma;
       'api::footer.footer': ApiFooterFooter;
