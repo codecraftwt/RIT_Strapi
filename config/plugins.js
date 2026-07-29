@@ -50,6 +50,11 @@ module.exports = ({ env }) => ({
         delete: {},
       },
 
+      security: {
+        allowedMediaTypes,
+        deniedExecutableTypes,
+      },
+
       sizeLimit: 10 * 1024 * 1024,
 
       breakpoints: {
