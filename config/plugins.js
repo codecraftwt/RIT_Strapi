@@ -42,7 +42,10 @@ module.exports = ({ env }) => ({
 
       actionOptions: {
         upload: {
-          folder: 'rit-website',
+          folder: env('CLOUDINARY_FOLDER', 'rit-website'),
+        },
+        uploadStream: {
+          folder: env('CLOUDINARY_FOLDER', 'rit-website'),
         },
         delete: {},
       },
