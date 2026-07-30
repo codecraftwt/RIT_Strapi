@@ -4,6 +4,14 @@ module.exports = {
   register(/* { strapi } */) {},
 
   async bootstrap({ strapi }) {
+    // Prevent Cloudinary from deleting images when deleted from the Media Library
+    const uploadProvider = strapi.plugin('upload').provider;
+    if (uploadProvider) {
+      uploadProvider.delete = async (file, customConfig) => {
+        strapi.log.info(`Skipped Cloudinary deletion for file: ${file.name} to preserve the asset.`);
+      };
+    }
+
     await strapi.admin.services.permission.conditionProvider.register({
       displayName: 'Is Dept Admin for Department',
       name: 'is-dept-admin-for-dept',
