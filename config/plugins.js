@@ -47,7 +47,7 @@ module.exports = ({ env }) => ({
         uploadStream: {
           folder: env('CLOUDINARY_FOLDER', 'rit-website'),
         },
-        delete: {},
+        // delete: {},
       },
 
       security: {
