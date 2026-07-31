@@ -27,4 +27,31 @@ module.exports = createCoreController('api::footer.footer', ({ strapi }) => ({
     }
     return super.delete(ctx);
   },
+
+  async incrementCounter(ctx) {
+    try {
+      // Find the footer entity (it's a single type)
+      const footer = await strapi.entityService.findMany('api::footer.footer');
+      
+      if (!footer) {
+        return ctx.notFound('Footer not found');
+      }
+
+      // Read current count, default to "10533074" if null or empty
+      const currentCountStr = footer.websiteCounter || '10533074';
+      const currentCount = parseInt(currentCountStr, 10) || 10533074;
+      const newCount = currentCount + 1;
+
+      // Update the footer entity
+      const updatedFooter = await strapi.entityService.update('api::footer.footer', footer.id, {
+        data: {
+          websiteCounter: newCount.toString(),
+        },
+      });
+
+      return { websiteCounter: updatedFooter.websiteCounter };
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
 }));

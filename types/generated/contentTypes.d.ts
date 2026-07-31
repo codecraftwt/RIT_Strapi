@@ -697,6 +697,8 @@ export interface ApiFooterFooter extends Struct.SingleTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    websiteCounter: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'10533074'>;
   };
 }
 
