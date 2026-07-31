@@ -31,7 +31,10 @@ module.exports = [
     name: 'strapi::cors',
     config: {
       enabled: true,
-      origin: ['*'], 
+      origin: [
+        'https://rit-frontend.vercel.app', 
+        'http://localhost:3000'
+      ],
     }
   },
   'strapi::poweredBy',
