@@ -27,7 +27,13 @@ module.exports = [
       },
     },
   },
-  'strapi::cors',
+  {
+    name: 'strapi::cors',
+    config: {
+      enabled: true,
+      origin: ['*'], 
+    }
+  },
   'strapi::poweredBy',
   'strapi::query',
   'strapi::body',
